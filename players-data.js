@@ -96,7 +96,7 @@ const playersData = [
         qpts: 5,
         isStar: false,
         birdEligible: false,
-        vetMinEligible: false,
+        vetMinEligible: false,  // >= 5 qpts, NOT eligible
         mleEligible: true
     },
     {
@@ -108,7 +108,7 @@ const playersData = [
         qpts: 4,
         isStar: false,
         birdEligible: false,
-        vetMinEligible: true,
+        vetMinEligible: true,  // < 5 qpts
         mleEligible: true
     },
     {
@@ -120,7 +120,7 @@ const playersData = [
         qpts: 3,
         isStar: false,
         birdEligible: true,
-        vetMinEligible: true,
+        vetMinEligible: true,  // < 5 qpts
         mleEligible: true
     },
     {
@@ -132,7 +132,7 @@ const playersData = [
         qpts: 3,
         isStar: false,
         birdEligible: false,
-        vetMinEligible: true,
+        vetMinEligible: true,  // < 5 qpts
         mleEligible: true
     },
     {
@@ -144,7 +144,7 @@ const playersData = [
         qpts: 3,
         isStar: false,
         birdEligible: false,
-        vetMinEligible: true,
+        vetMinEligible: true,  // < 5 qpts
         mleEligible: true
     }
 ];

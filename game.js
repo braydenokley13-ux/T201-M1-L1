@@ -5,9 +5,9 @@ let gameState = {
     totalQPts: 0,
     playerCount: 0,
     starsKept: 0,
-    mleCount: 0,
+    mleUsed: false,
+    mlePlayerId: null,
     vetMinCount: 0,
-    birdAllowance: 0,
     hasWon: false
 };
 
@@ -18,11 +18,12 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function initializeGame() {
-    // Initialize player states
+    // Initialize player states - everyone starts CUT
     gameState.players = playersData.map(player => ({
         ...player,
-        move: 'Keep',
-        useBirdRights: false
+        status: 'Cut',
+        useMLE: false,
+        useVetMin: false
     }));
 
     renderPlayers();
@@ -41,13 +42,28 @@ function renderPlayers() {
 
 function createPlayerCard(player, index) {
     const card = document.createElement('div');
-    card.className = `player-card ${player.isStar ? 'star' : ''}`;
+    card.className = `player-card ${player.isStar ? 'star' : ''} ${player.status === 'Cut' ? 'cut' : ''}`;
     card.id = `player-${player.id}`;
+
+    // Calculate effective salary for display
+    let displaySalary = player.salary;
+    let salaryNote = '';
+
+    if (player.status === 'Sign') {
+        if (player.useMLE) {
+            displaySalary = player.salary * 0.5;
+            salaryNote = ' <span class="salary-note">(MLE: 50% off)</span>';
+        } else if (player.useVetMin) {
+            displaySalary = 2000000;
+            salaryNote = ' <span class="salary-note">(Vet Min)</span>';
+        }
+    }
 
     card.innerHTML = `
         <div class="player-header">
             <div class="player-number">${player.number}</div>
             ${player.isStar ? '<div class="star-badge">⭐</div>' : ''}
+            ${player.status === 'Cut' ? '<div class="status-badge cut-badge">AVAILABLE</div>' : '<div class="status-badge signed-badge">SIGNED</div>'}
         </div>
         <div class="player-info">
             <div class="player-name">${player.name}</div>
@@ -56,7 +72,7 @@ function createPlayerCard(player, index) {
         <div class="player-stats">
             <div class="stat-item">
                 <div class="stat-item-label">Salary</div>
-                <div class="stat-item-value">$${formatSalary(player.salary)}</div>
+                <div class="stat-item-value">$${formatSalary(displaySalary)}${salaryNote}</div>
             </div>
             <div class="stat-item">
                 <div class="stat-item-label">Q-Points</div>
@@ -65,76 +81,108 @@ function createPlayerCard(player, index) {
         </div>
         <div class="player-controls">
             <div class="control-group">
-                <label class="control-label">Move:</label>
                 <select class="move-select" data-player-id="${player.id}" onchange="handleMoveChange(${player.id}, this.value)">
-                    <option value="Keep">✓ Keep</option>
-                    <option value="Cut">✗ Cut</option>
-                    <option value="Trade">↔ Trade</option>
-                    <option value="Re-sign">✍ Re-sign</option>
+                    <option value="Cut" ${player.status === 'Cut' ? 'selected' : ''}>✗ CUT</option>
+                    <option value="Sign" ${player.status === 'Sign' ? 'selected' : ''}>✓ SIGN</option>
                 </select>
             </div>
-            ${player.birdEligible ? `
-                <div class="control-group">
-                    <div class="checkbox-group">
+            <div class="player-badges">
+                ${player.birdEligible && player.status === 'Sign' ? '<div class="info-badge bird-badge" title="Has Bird Rights - can be signed over cap">🦅 Bird Rights</div>' : ''}
+                ${player.mleEligible && player.status === 'Sign' ? `
+                    <div class="checkbox-group mle-group">
                         <input
                             type="checkbox"
-                            id="bird-${player.id}"
-                            class="bird-checkbox"
+                            id="mle-${player.id}"
+                            class="exception-checkbox"
                             data-player-id="${player.id}"
-                            onchange="handleBirdRightsChange(${player.id}, this.checked)"
+                            ${player.useMLE ? 'checked' : ''}
+                            ${gameState.mleUsed && !player.useMLE ? 'disabled' : ''}
+                            onchange="handleMLEChange(${player.id}, this.checked)"
                         />
-                        <label for="bird-${player.id}" class="checkbox-label">
-                            Bird Rights <span class="bird-icon">🦅</span>
+                        <label for="mle-${player.id}" class="checkbox-label ${gameState.mleUsed && !player.useMLE ? 'disabled' : ''}">
+                            💰 Use MLE (50% off)
                         </label>
                     </div>
-                </div>
-            ` : ''}
-            ${player.vetMinEligible ? `
-                <div class="vet-min-badge" style="font-size: 0.8em; color: #666; margin-top: 5px; text-align: center;">
-                    ✓ Vet Min Eligible
-                </div>
-            ` : ''}
-            ${player.mleEligible ? `
-                <div class="mle-badge" style="font-size: 0.8em; color: #666; margin-top: 5px; text-align: center;">
-                    ✓ MLE Eligible
-                </div>
-            ` : ''}
+                ` : ''}
+                ${player.vetMinEligible && player.status === 'Sign' ? `
+                    <div class="checkbox-group vet-group">
+                        <input
+                            type="checkbox"
+                            id="vet-${player.id}"
+                            class="exception-checkbox"
+                            data-player-id="${player.id}"
+                            ${player.useVetMin ? 'checked' : ''}
+                            ${gameState.vetMinCount >= 3 && !player.useVetMin ? 'disabled' : ''}
+                            onchange="handleVetMinChange(${player.id}, this.checked)"
+                        />
+                        <label for="vet-${player.id}" class="checkbox-label ${gameState.vetMinCount >= 3 && !player.useVetMin ? 'disabled' : ''}">
+                            📉 Vet Min ($2M)
+                        </label>
+                    </div>
+                ` : ''}
+            </div>
         </div>
     `;
 
     return card;
 }
 
-function handleMoveChange(playerId, move) {
+function handleMoveChange(playerId, status) {
     const playerIndex = gameState.players.findIndex(p => p.id === playerId);
     if (playerIndex === -1) return;
 
-    gameState.players[playerIndex].move = move;
+    gameState.players[playerIndex].status = status;
 
-    // Update card styling
-    const card = document.getElementById(`player-${playerId}`);
-    card.classList.remove('cut', 'traded');
-
-    if (move === 'Cut') {
-        card.classList.add('cut');
-    } else if (move === 'Trade') {
-        card.classList.add('traded');
+    // If cutting a player, reset their exceptions
+    if (status === 'Cut') {
+        gameState.players[playerIndex].useMLE = false;
+        gameState.players[playerIndex].useVetMin = false;
     }
 
-    // Add bounce animation
-    card.style.animation = 'none';
-    setTimeout(() => {
-        card.style.animation = 'bounceIn 0.4s ease-out';
-    }, 10);
-
+    // Re-render to update the entire view
+    renderPlayers();
     updateGameState();
 }
 
-function handleBirdRightsChange(playerId, useBirdRights) {
+function handleMLEChange(playerId, checked) {
     const playerIndex = gameState.players.findIndex(p => p.id === playerId);
     if (playerIndex === -1) return;
 
-    gameState.players[playerIndex].useBirdRights = useBirdRights;
+    // If checking and MLE already used by another player, prevent it
+    if (checked && gameState.mleUsed && gameState.mlePlayerId !== playerId) {
+        alert('MLE is already in use! You can only use it on ONE player.');
+        return;
+    }
+
+    // Can't use both MLE and Vet Min
+    if (checked && gameState.players[playerIndex].useVetMin) {
+        gameState.players[playerIndex].useVetMin = false;
+    }
+
+    gameState.players[playerIndex].useMLE = checked;
+
+    renderPlayers();
+    updateGameState();
+}
+
+function handleVetMinChange(playerId, checked) {
+    const playerIndex = gameState.players.findIndex(p => p.id === playerId);
+    if (playerIndex === -1) return;
+
+    // Check vet min limit
+    if (checked && gameState.vetMinCount >= 3) {
+        alert('You can only use Veteran Minimum on 3 players!');
+        return;
+    }
+
+    // Can't use both MLE and Vet Min
+    if (checked && gameState.players[playerIndex].useMLE) {
+        gameState.players[playerIndex].useMLE = false;
+    }
+
+    gameState.players[playerIndex].useVetMin = checked;
+
+    renderPlayers();
     updateGameState();
 }
 
@@ -150,24 +198,28 @@ function calculateTotals() {
     let totalQPts = 0;
     let playerCount = 0;
     let starsKept = 0;
-    let mleCount = 0;
+    let mleUsed = false;
+    let mlePlayerId = null;
     let vetMinCount = 0;
-    let birdAllowance = 0;
 
     gameState.players.forEach(player => {
-        const move = player.move;
-
-        // Count players
-        if (move === 'Keep' || move === 'Re-sign') {
+        // Only count signed players
+        if (player.status === 'Sign') {
             playerCount++;
 
-            // Add salary
-            if (player.useBirdRights && player.birdEligible && move === 'Re-sign') {
-                // Bird Rights: doesn't count against cap but adds to total
-                birdAllowance += player.salary;
-            } else {
-                totalPayroll += player.salary;
+            // Calculate salary based on exceptions
+            let effectiveSalary = player.salary;
+
+            if (player.useMLE) {
+                effectiveSalary = player.salary * 0.5;
+                mleUsed = true;
+                mlePlayerId = player.id;
+            } else if (player.useVetMin) {
+                effectiveSalary = 2000000;
+                vetMinCount++;
             }
+
+            totalPayroll += effectiveSalary;
 
             // Add quality points
             totalQPts += player.qpts;
@@ -176,16 +228,6 @@ function calculateTotals() {
             if (player.isStar) {
                 starsKept++;
             }
-
-            // Track MLE usage (players signed with MLE don't count fully against cap)
-            if (player.mleEligible && move === 'Re-sign' && !player.useBirdRights) {
-                mleCount++;
-            }
-
-            // Track Vet Min usage
-            if (player.vetMinEligible && player.salary <= 2000000) {
-                vetMinCount++;
-            }
         }
     });
 
@@ -193,15 +235,13 @@ function calculateTotals() {
     gameState.totalQPts = totalQPts;
     gameState.playerCount = playerCount;
     gameState.starsKept = starsKept;
-    gameState.mleCount = mleCount;
+    gameState.mleUsed = mleUsed;
+    gameState.mlePlayerId = mlePlayerId;
     gameState.vetMinCount = vetMinCount;
-    gameState.birdAllowance = birdAllowance;
 }
 
 function updateScoreboard() {
-    const totalWithBird = gameState.totalPayroll + gameState.birdAllowance;
-
-    document.getElementById('totalPayroll').textContent = `$${formatSalary(totalWithBird)}`;
+    document.getElementById('totalPayroll').textContent = `$${formatSalary(gameState.totalPayroll)}`;
 
     const capSpace = SALARY_CAP - gameState.totalPayroll;
     document.getElementById('capSpace').textContent = capSpace >= 0
@@ -215,16 +255,15 @@ function updateScoreboard() {
 }
 
 function updateProgressBars() {
-    // Cap usage (allow over 100% with Bird Rights)
-    const totalWithBird = gameState.totalPayroll + gameState.birdAllowance;
-    const capPercentage = Math.min((totalWithBird / SALARY_CAP) * 100, 150);
+    // Cap usage
+    const capPercentage = Math.min((gameState.totalPayroll / SALARY_CAP) * 100, 150);
     const capFill = document.getElementById('capProgress');
     capFill.style.width = `${capPercentage}%`;
 
-    // Change color if over cap
-    if (gameState.totalPayroll > SALARY_CAP && gameState.birdAllowance === 0) {
+    // Change color based on cap status
+    if (gameState.totalPayroll > SALARY_CAP) {
         capFill.style.background = 'linear-gradient(90deg, #F44336, #EF5350)';
-    } else if (totalWithBird > SALARY_CAP) {
+    } else if (capPercentage > 90) {
         capFill.style.background = 'linear-gradient(90deg, #FF9800, #FFB74D)';
     } else {
         capFill.style.background = 'linear-gradient(90deg, #006BB6, #4a9fd8)';
@@ -242,11 +281,9 @@ function updateProgressBars() {
 function validateRules() {
     const rules = {
         rosterSize: gameState.playerCount >= 12 && gameState.playerCount <= 15,
-        underCap: gameState.totalPayroll <= SALARY_CAP || gameState.birdAllowance > 0,
+        underCap: gameState.totalPayroll <= SALARY_CAP,
         starsKept: gameState.starsKept === 3,
-        qualityPoints: gameState.totalQPts >= QUALITY_POINTS_MINIMUM,
-        mleOk: gameState.mleCount <= 3, // Max 3 MLE signings
-        vetMinOk: gameState.vetMinCount <= 5 // Max 5 vet min players
+        qualityPoints: gameState.totalQPts >= QUALITY_POINTS_MINIMUM
     };
 
     // Update rule UI
@@ -254,8 +291,6 @@ function validateRules() {
     updateRuleUI('ruleCap', rules.underCap);
     updateRuleUI('ruleStars', rules.starsKept);
     updateRuleUI('ruleQPts', rules.qualityPoints);
-    updateRuleUI('ruleMLE', rules.mleOk);
-    updateRuleUI('ruleVetMin', rules.vetMinOk);
 
     // Check if all rules pass
     const allRulesPass = Object.values(rules).every(rule => rule === true);
@@ -296,11 +331,11 @@ function updateStatusBanner(success) {
     if (success) {
         banner.classList.add('success');
         icon.textContent = '🎉';
-        text.textContent = 'Perfect! You built a championship roster!';
+        text.textContent = 'Perfect! You rebuilt the championship roster!';
     } else {
         banner.classList.add('fail');
         icon.textContent = '⚠️';
-        text.textContent = 'Keep working! Check the rules on the right.';
+        text.textContent = 'Keep building! Check the rules on the right.';
     }
 }
 
