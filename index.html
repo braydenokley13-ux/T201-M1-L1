@@ -7,117 +7,102 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="basketball-court">
-        <div class="particles" id="particles"></div>
+    <div class="landing-page">
+        <div class="landing-particles" id="landingParticles"></div>
 
-        <header class="game-header">
-            <h1 class="game-title">🏀 KNICKS CAP CRASH 🏀</h1>
-            <p class="game-subtitle">Manage the roster under the $120M salary cap!</p>
-        </header>
-
-        <div class="scoreboard">
-            <div class="stat-card">
-                <div class="stat-label">Total Payroll</div>
-                <div class="stat-value" id="totalPayroll">$0</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Cap Space</div>
-                <div class="stat-value" id="capSpace">$120M</div>
-            </div>
-            <div class="stat-card highlight">
-                <div class="stat-label">Quality Points</div>
-                <div class="stat-value qpts" id="totalQPts">0</div>
-                <div class="stat-subtext">Need 64+</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Players</div>
-                <div class="stat-value" id="playerCount">0</div>
-            </div>
-        </div>
-
-        <div class="progress-container">
-            <div class="progress-bar-wrapper">
-                <label>Cap Usage</label>
-                <div class="progress-bar">
-                    <div class="progress-fill cap-fill" id="capProgress"></div>
-                </div>
-                <span id="capPercentage">0%</span>
-            </div>
-            <div class="progress-bar-wrapper">
-                <label>Quality Points</label>
-                <div class="progress-bar">
-                    <div class="progress-fill qpts-fill" id="qptsProgress"></div>
-                </div>
-                <span id="qptsPercentage">0/64</span>
-            </div>
-        </div>
-
-        <div class="main-container">
-            <div class="roster-grid" id="rosterGrid">
-                <!-- Player cards will be generated here -->
+        <div class="landing-container">
+            <div class="landing-header">
+                <h1 class="landing-title">🏀 KNICKS CAP CRASH 🏀</h1>
+                <div class="landing-badge">Summer 2025</div>
             </div>
 
-            <aside class="rules-sidebar">
-                <h3>📋 Rule Checks</h3>
-                <div class="rule-list" id="rulesList">
-                    <div class="rule-item" id="ruleRoster">
-                        <span class="rule-icon">⏳</span>
-                        <span class="rule-text">Roster Size (12-15)</span>
-                    </div>
-                    <div class="rule-item" id="ruleCap">
-                        <span class="rule-icon">⏳</span>
-                        <span class="rule-text">Under Cap</span>
-                    </div>
-                    <div class="rule-item" id="ruleStars">
-                        <span class="rule-icon">⏳</span>
-                        <span class="rule-text">Keep 3 Stars</span>
-                    </div>
-                    <div class="rule-item" id="ruleQPts">
-                        <span class="rule-icon">⏳</span>
-                        <span class="rule-text">Quality Points ≥ 64</span>
-                    </div>
-                    <div class="rule-item" id="ruleMLE">
-                        <span class="rule-icon">⏳</span>
-                        <span class="rule-text">MLE Usage OK</span>
-                    </div>
-                    <div class="rule-item" id="ruleVetMin">
-                        <span class="rule-icon">⏳</span>
-                        <span class="rule-text">Vet Min Limits OK</span>
-                    </div>
+            <div class="story-container">
+                <div class="story-section">
+                    <h2 class="story-heading">📰 THE SITUATION</h2>
+                    <p class="story-text">
+                        It's the summer of 2025. The New York Knicks just completed an incredible championship run,
+                        bringing the Larry O'Brien trophy back to Madison Square Garden for the first time in over 50 years.
+                    </p>
                 </div>
 
-                <div class="info-box">
-                    <h4>💡 What is Bird Rights?</h4>
-                    <p>Bird Rights let you re-sign your own players even if over the cap! Look for the 🦅 icon.</p>
+                <div class="story-section">
+                    <h2 class="story-heading">💥 THE CRISIS</h2>
+                    <p class="story-text">
+                        But there's a problem. The NBA's salary cap has <strong>crashed to just $120 million</strong> due to
+                        economic pressures. With massive luxury tax penalties looming, the Knicks front office made the
+                        devastating decision to <strong>release EVERY player</strong> on the roster.
+                    </p>
                 </div>
 
-                <button class="reset-btn" id="resetBtn">🔄 Reset Game</button>
-            </aside>
-        </div>
+                <div class="story-section">
+                    <h2 class="story-heading">🎯 YOUR MISSION</h2>
+                    <p class="story-text">
+                        You've been hired as the new General Manager. Your job: <strong>rebuild the championship roster</strong>
+                        while staying under the $120M salary cap. You'll need to:
+                    </p>
+                    <ul class="mission-list">
+                        <li>✓ Sign between <strong>12-15 players</strong></li>
+                        <li>✓ Keep all <strong>3 star players</strong> (Brunson, Towns, Bridges)</li>
+                        <li>✓ Achieve at least <strong>64 quality points</strong></li>
+                        <li>✓ Stay under the <strong>$120M salary cap</strong></li>
+                        <li>✓ Use cap exceptions wisely (Bird Rights, MLE, Vet Minimum)</li>
+                    </ul>
+                </div>
 
-        <div class="status-banner" id="statusBanner">
-            <div class="status-content">
-                <span id="statusIcon">⏳</span>
-                <span id="statusText">Make your moves to build a winning roster!</span>
+                <div class="story-section">
+                    <h2 class="story-heading">🔧 CAP EXCEPTIONS AVAILABLE</h2>
+                    <div class="exceptions-grid">
+                        <div class="exception-card">
+                            <div class="exception-icon">🦅</div>
+                            <h3>Bird Rights</h3>
+                            <p>Re-sign your own players even over the cap (auto-applies when needed)</p>
+                        </div>
+                        <div class="exception-card">
+                            <div class="exception-icon">💰</div>
+                            <h3>Mid-Level Exception</h3>
+                            <p>Use on ONE player to reduce their cap hit by 50%</p>
+                        </div>
+                        <div class="exception-card">
+                            <div class="exception-icon">📉</div>
+                            <h3>Veteran Minimum</h3>
+                            <p>Sign up to 3 low-impact players (< 5 Q-Pts) for just $2M each</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="start-game-btn" onclick="window.location.href='game.html'">
+                🏀 START YOUR GM CAREER 🏀
+            </button>
+
+            <div class="landing-footer">
+                <p>Can you rebuild the dynasty?</p>
             </div>
         </div>
     </div>
 
-    <!-- Success Modal -->
-    <div class="modal" id="successModal">
-        <div class="modal-content">
-            <div class="confetti-container" id="confetti"></div>
-            <h2>🎉 YOU DID IT! 🎉</h2>
-            <p>You've successfully managed the Knicks roster!</p>
-            <div class="claim-code">
-                <label>Your Claim Code:</label>
-                <div class="code-display" id="claimCode">KNICKS2025</div>
-            </div>
-            <button class="modal-btn" id="closeModal">Keep Playing</button>
-        </div>
-    </div>
+    <script>
+        // Create particles for landing page
+        function createLandingParticles() {
+            const container = document.getElementById('landingParticles');
+            const colors = ['#F58426', '#006BB6'];
 
-    <script src="players-data.js"></script>
-    <script src="game.js"></script>
+            for (let i = 0; i < 40; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.width = Math.random() * 6 + 3 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDuration = (Math.random() * 10 + 5) + 's';
+                particle.style.animationDelay = Math.random() * 5 + 's';
+
+                container.appendChild(particle);
+            }
+        }
+
+        createLandingParticles();
+    </script>
 </body>
 </html>
