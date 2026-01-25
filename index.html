@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knicks Cap Crash 🏀</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="basketball-court">
+        <div class="particles" id="particles"></div>
+
+        <header class="game-header">
+            <h1 class="game-title">🏀 KNICKS CAP CRASH 🏀</h1>
+            <p class="game-subtitle">Manage the roster under the $120M salary cap!</p>
+        </header>
+
+        <div class="scoreboard">
+            <div class="stat-card">
+                <div class="stat-label">Total Payroll</div>
+                <div class="stat-value" id="totalPayroll">$0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Cap Space</div>
+                <div class="stat-value" id="capSpace">$120M</div>
+            </div>
+            <div class="stat-card highlight">
+                <div class="stat-label">Quality Points</div>
+                <div class="stat-value qpts" id="totalQPts">0</div>
+                <div class="stat-subtext">Need 64+</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Players</div>
+                <div class="stat-value" id="playerCount">0</div>
+            </div>
+        </div>
+
+        <div class="progress-container">
+            <div class="progress-bar-wrapper">
+                <label>Cap Usage</label>
+                <div class="progress-bar">
+                    <div class="progress-fill cap-fill" id="capProgress"></div>
+                </div>
+                <span id="capPercentage">0%</span>
+            </div>
+            <div class="progress-bar-wrapper">
+                <label>Quality Points</label>
+                <div class="progress-bar">
+                    <div class="progress-fill qpts-fill" id="qptsProgress"></div>
+                </div>
+                <span id="qptsPercentage">0/64</span>
+            </div>
+        </div>
+
+        <div class="main-container">
+            <div class="roster-grid" id="rosterGrid">
+                <!-- Player cards will be generated here -->
+            </div>
+
+            <aside class="rules-sidebar">
+                <h3>📋 Rule Checks</h3>
+                <div class="rule-list" id="rulesList">
+                    <div class="rule-item" id="ruleRoster">
+                        <span class="rule-icon">⏳</span>
+                        <span class="rule-text">Roster Size (12-15)</span>
+                    </div>
+                    <div class="rule-item" id="ruleCap">
+                        <span class="rule-icon">⏳</span>
+                        <span class="rule-text">Under Cap</span>
+                    </div>
+                    <div class="rule-item" id="ruleStars">
+                        <span class="rule-icon">⏳</span>
+                        <span class="rule-text">Keep 3 Stars</span>
+                    </div>
+                    <div class="rule-item" id="ruleQPts">
+                        <span class="rule-icon">⏳</span>
+                        <span class="rule-text">Quality Points ≥ 64</span>
+                    </div>
+                    <div class="rule-item" id="ruleMLE">
+                        <span class="rule-icon">⏳</span>
+                        <span class="rule-text">MLE Usage OK</span>
+                    </div>
+                    <div class="rule-item" id="ruleVetMin">
+                        <span class="rule-icon">⏳</span>
+                        <span class="rule-text">Vet Min Limits OK</span>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <h4>💡 What is Bird Rights?</h4>
+                    <p>Bird Rights let you re-sign your own players even if over the cap! Look for the 🦅 icon.</p>
+                </div>
+
+                <button class="reset-btn" id="resetBtn">🔄 Reset Game</button>
+            </aside>
+        </div>
+
+        <div class="status-banner" id="statusBanner">
+            <div class="status-content">
+                <span id="statusIcon">⏳</span>
+                <span id="statusText">Make your moves to build a winning roster!</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <div class="confetti-container" id="confetti"></div>
+            <h2>🎉 YOU DID IT! 🎉</h2>
+            <p>You've successfully managed the Knicks roster!</p>
+            <div class="claim-code">
+                <label>Your Claim Code:</label>
+                <div class="code-display" id="claimCode">KNICKS2025</div>
+            </div>
+            <button class="modal-btn" id="closeModal">Keep Playing</button>
+        </div>
+    </div>
+
+    <script src="players-data.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
