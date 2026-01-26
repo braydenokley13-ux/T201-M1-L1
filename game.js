@@ -35,15 +35,37 @@ function renderPlayers() {
     const rosterGrid = document.getElementById('rosterGrid');
     rosterGrid.innerHTML = '';
 
-    gameState.players.forEach((player, index) => {
+    // Separate Knicks and Free Agents
+    const knicks = gameState.players.filter(p => p.isKnick);
+    const freeAgents = gameState.players.filter(p => !p.isKnick);
+
+    // Add Knicks section
+    const knicksSection = document.createElement('div');
+    knicksSection.className = 'player-section';
+    knicksSection.innerHTML = '<h2 class="section-title">🏀 KNICKS ROSTER</h2>';
+    rosterGrid.appendChild(knicksSection);
+
+    knicks.forEach((player, index) => {
         const card = createPlayerCard(player, index);
+        rosterGrid.appendChild(card);
+    });
+
+    // Add Free Agents section
+    const freeAgentsSection = document.createElement('div');
+    freeAgentsSection.className = 'player-section';
+    freeAgentsSection.innerHTML = '<h2 class="section-title">⭐ FREE AGENTS</h2>';
+    rosterGrid.appendChild(freeAgentsSection);
+
+    freeAgents.forEach((player, index) => {
+        const card = createPlayerCard(player, knicks.length + index);
         rosterGrid.appendChild(card);
     });
 }
 
 function createPlayerCard(player, index) {
     const card = document.createElement('div');
-    card.className = `player-card ${player.isStar ? 'star' : ''} ${player.status === 'Cut' ? 'cut' : ''}`;
+    const statusClass = player.status === 'Cut' ? 'cut' : player.status === 'Trade' ? 'traded' : '';
+    card.className = `player-card ${player.isStar ? 'star' : ''} ${statusClass} ${!player.isKnick ? 'free-agent' : ''}`;
     card.id = `player-${player.id}`;
 
     // Calculate effective salary for display
@@ -64,7 +86,9 @@ function createPlayerCard(player, index) {
         <div class="player-header">
             <div class="player-number">${player.number}</div>
             ${player.isStar ? '<div class="star-badge">⭐</div>' : ''}
-            ${player.status === 'Cut' ? '<div class="status-badge cut-badge">AVAILABLE</div>' : '<div class="status-badge signed-badge">SIGNED</div>'}
+            ${player.status === 'Cut' ? '<div class="status-badge cut-badge">AVAILABLE</div>' :
+              player.status === 'Trade' ? '<div class="status-badge trade-badge">TRADED</div>' :
+              '<div class="status-badge signed-badge">SIGNED</div>'}
         </div>
         <div class="player-info">
             <div class="player-name">${player.name}</div>
@@ -85,6 +109,7 @@ function createPlayerCard(player, index) {
                 <select class="move-select" data-player-id="${player.id}" onchange="handleMoveChange(${player.id}, this.value)">
                     <option value="Cut" ${player.status === 'Cut' ? 'selected' : ''}>✗ CUT</option>
                     <option value="Sign" ${player.status === 'Sign' ? 'selected' : ''}>✓ SIGN</option>
+                    ${player.isKnick ? `<option value="Trade" ${player.status === 'Trade' ? 'selected' : ''}>↔ TRADE</option>` : ''}
                 </select>
             </div>
             <div class="player-badges">
@@ -134,8 +159,8 @@ function handleMoveChange(playerId, status) {
 
     gameState.players[playerIndex].status = status;
 
-    // If cutting a player, reset their exceptions
-    if (status === 'Cut') {
+    // If cutting or trading a player, reset their exceptions
+    if (status === 'Cut' || status === 'Trade') {
         gameState.players[playerIndex].useMLE = false;
         gameState.players[playerIndex].useVetMin = false;
     }
@@ -294,7 +319,7 @@ function validateRules() {
     const underCapWithBirdRights = gameState.payrollWithoutBirdRights <= SALARY_CAP;
 
     const rules = {
-        rosterSize: gameState.playerCount >= 12 && gameState.playerCount <= 15,
+        rosterSize: gameState.playerCount >= 10 && gameState.playerCount <= 13,
         underCap: underCapWithBirdRights,  // Allow going over cap if only due to Bird Rights players
         starsKept: gameState.starsKept >= 2,  // Changed to at least 2 stars
         qualityPoints: gameState.totalQPts >= QUALITY_POINTS_MINIMUM
