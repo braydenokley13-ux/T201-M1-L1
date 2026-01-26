@@ -380,8 +380,96 @@ function updateStatusBanner(success) {
 
 function showSuccessModal() {
     const modal = document.getElementById('successModal');
+
+    // Calculate season simulation
+    const seasonResults = simulateSeason();
+
+    // Update modal content with simulation results
+    document.getElementById('seasonRecord').textContent = seasonResults.record;
+    document.getElementById('playoffResult').textContent = seasonResults.playoff;
+    document.getElementById('tierName').textContent = seasonResults.tier;
+    document.getElementById('claimCode').textContent = seasonResults.claimCode;
+    document.getElementById('tierDescription').textContent = seasonResults.description;
+
+    // Update stats
+    document.getElementById('finalQPts').textContent = gameState.totalQPts + ' pts';
+    const capEfficiency = ((SALARY_CAP - gameState.totalPayroll) / SALARY_CAP * 100).toFixed(1);
+    document.getElementById('capEfficiency').textContent = capEfficiency + '% saved';
+
+    // Add tier class for styling
+    const modalContent = document.querySelector('.modal-content');
+    modalContent.className = 'modal-content tier-' + seasonResults.tier.toLowerCase().replace(/\s+/g, '-');
+
     modal.classList.add('show');
     createConfetti();
+}
+
+function simulateSeason() {
+    const qpts = gameState.totalQPts;
+    const capUsed = gameState.totalPayroll;
+    const capEfficiency = ((SALARY_CAP - capUsed) / SALARY_CAP) * 100; // % of cap saved
+    const stars = gameState.starsKept;
+
+    // Check for elite players
+    const hasLeBron = gameState.players.find(p => p.id === 101 && p.status === 'Sign');
+    const hasCurry = gameState.players.find(p => p.id === 102 && p.status === 'Sign');
+    const hasEliteFA = hasLeBron || hasCurry;
+
+    // Calculate tier based on quality points and cap efficiency
+    let tier, record, playoff, claimCode, description;
+
+    if (qpts >= 95 && capEfficiency > 15) {
+        // DYNASTY TIER
+        tier = 'Dynasty';
+        record = '67-15';
+        playoff = '🏆 NBA CHAMPIONS! Finals MVP performance!';
+        claimCode = 'DYNASTY2026';
+        description = 'Dominant season! Elite roster with incredible cap management!';
+    } else if (qpts >= 90 || (qpts >= 85 && capEfficiency > 20)) {
+        // CHAMPIONSHIP TIER
+        tier = 'Championship';
+        record = '62-20';
+        playoff = '🏆 NBA CHAMPIONS! Hard-fought Finals victory!';
+        claimCode = 'CHAMPS2026';
+        description = 'Championship season! Outstanding roster construction!';
+    } else if (qpts >= 85 && stars >= 3) {
+        // SUPERTEAM TIER
+        tier = 'Superteam';
+        record = '58-24';
+        playoff = '🥈 NBA Finals! Lost in 7 games but great run!';
+        claimCode = 'FINALS2026';
+        description = 'Superstar-loaded roster! Made it to the Finals!';
+    } else if (qpts >= 85 || (qpts >= 80 && capEfficiency > 25)) {
+        // CONTENDER TIER
+        tier = 'Contender';
+        record = '56-26';
+        playoff = '🥉 Conference Finals! Lost in 6 games.';
+        claimCode = 'CONTEND2026';
+        description = 'Strong contender! Great balance of talent and value!';
+    } else if (qpts >= 80) {
+        // PLAYOFF TEAM TIER
+        tier = 'Playoff Team';
+        record = '51-31';
+        playoff = '🏀 Second Round! Lost in 5 games.';
+        claimCode = 'PLAYOFFS2026';
+        description = 'Solid playoff team! Good foundation to build on.';
+    } else {
+        // SCRAPPY TEAM TIER
+        tier = 'Scrappy Team';
+        record = '46-36';
+        playoff = '🎯 First Round! Lost in 6 games but made it!';
+        claimCode = 'SCRAPPY2026';
+        description = 'Made the playoffs with smart cap management!';
+    }
+
+    // Add bonus for elite FA signings
+    if (hasEliteFA && tier === 'Championship') {
+        tier = 'All-Star Dynasty';
+        claimCode = 'ALLSTAR2026';
+        description = 'Legendary roster with hall of fame talent!';
+    }
+
+    return { tier, record, playoff, claimCode, description };
 }
 
 function createConfetti() {
