@@ -35,15 +35,36 @@ function renderPlayers() {
     const rosterGrid = document.getElementById('rosterGrid');
     rosterGrid.innerHTML = '';
 
-    gameState.players.forEach((player, index) => {
+    // Separate Knicks and Free Agents
+    const knicks = gameState.players.filter(p => p.isKnick);
+    const freeAgents = gameState.players.filter(p => !p.isKnick);
+
+    // Add Knicks section
+    const knicksSection = document.createElement('div');
+    knicksSection.className = 'player-section';
+    knicksSection.innerHTML = '<h2 class="section-title">🏀 KNICKS ROSTER</h2>';
+    rosterGrid.appendChild(knicksSection);
+
+    knicks.forEach((player, index) => {
         const card = createPlayerCard(player, index);
+        rosterGrid.appendChild(card);
+    });
+
+    // Add Free Agents section
+    const freeAgentsSection = document.createElement('div');
+    freeAgentsSection.className = 'player-section';
+    freeAgentsSection.innerHTML = '<h2 class="section-title">⭐ FREE AGENTS</h2>';
+    rosterGrid.appendChild(freeAgentsSection);
+
+    freeAgents.forEach((player, index) => {
+        const card = createPlayerCard(player, knicks.length + index);
         rosterGrid.appendChild(card);
     });
 }
 
 function createPlayerCard(player, index) {
     const card = document.createElement('div');
-    card.className = `player-card ${player.isStar ? 'star' : ''} ${player.status === 'Cut' ? 'cut' : ''}`;
+    card.className = `player-card ${player.isStar ? 'star' : ''} ${player.status === 'Cut' ? 'cut' : ''} ${!player.isKnick ? 'free-agent' : ''}`;
     card.id = `player-${player.id}`;
 
     // Calculate effective salary for display
@@ -294,7 +315,7 @@ function validateRules() {
     const underCapWithBirdRights = gameState.payrollWithoutBirdRights <= SALARY_CAP;
 
     const rules = {
-        rosterSize: gameState.playerCount >= 12 && gameState.playerCount <= 15,
+        rosterSize: gameState.playerCount >= 10 && gameState.playerCount <= 13,
         underCap: underCapWithBirdRights,  // Allow going over cap if only due to Bird Rights players
         starsKept: gameState.starsKept >= 2,  // Changed to at least 2 stars
         qualityPoints: gameState.totalQPts >= QUALITY_POINTS_MINIMUM
