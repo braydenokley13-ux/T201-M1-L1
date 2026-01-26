@@ -1,6 +1,6 @@
 // Knicks 2024-2025 Roster Data
 const SALARY_CAP = 120000000; // $120M salary cap
-const QUALITY_POINTS_MINIMUM = 64; // Minimum quality points needed to win
+const QUALITY_POINTS_MINIMUM = 50; // Minimum quality points needed to win (lowered for better balance)
 
 const playersData = [
     {

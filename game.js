@@ -2,6 +2,7 @@
 let gameState = {
     players: [],
     totalPayroll: 0,
+    payrollWithoutBirdRights: 0,  // Payroll excluding Bird Rights players (for cap validation)
     totalQPts: 0,
     playerCount: 0,
     starsKept: 0,
@@ -151,6 +152,7 @@ function handleMLEChange(playerId, checked) {
     // If checking and MLE already used by another player, prevent it
     if (checked && gameState.mleUsed && gameState.mlePlayerId !== playerId) {
         alert('MLE is already in use! You can only use it on ONE player.');
+        renderPlayers(); // Re-render to uncheck the box in UI
         return;
     }
 
@@ -169,9 +171,10 @@ function handleVetMinChange(playerId, checked) {
     const playerIndex = gameState.players.findIndex(p => p.id === playerId);
     if (playerIndex === -1) return;
 
-    // Check vet min limit
+    // Check vet min limit - prevent adding more than 3
     if (checked && gameState.vetMinCount >= 3) {
         alert('You can only use Veteran Minimum on 3 players!');
+        renderPlayers(); // Re-render to uncheck the box in UI
         return;
     }
 
@@ -195,6 +198,7 @@ function updateGameState() {
 
 function calculateTotals() {
     let totalPayroll = 0;
+    let payrollWithoutBirdRights = 0;  // Track payroll excluding Bird Rights players
     let totalQPts = 0;
     let playerCount = 0;
     let starsKept = 0;
@@ -221,6 +225,11 @@ function calculateTotals() {
 
             totalPayroll += effectiveSalary;
 
+            // Track payroll without Bird Rights players (for cap validation)
+            if (!player.birdEligible) {
+                payrollWithoutBirdRights += effectiveSalary;
+            }
+
             // Add quality points
             totalQPts += player.qpts;
 
@@ -232,6 +241,7 @@ function calculateTotals() {
     });
 
     gameState.totalPayroll = totalPayroll;
+    gameState.payrollWithoutBirdRights = payrollWithoutBirdRights;
     gameState.totalQPts = totalQPts;
     gameState.playerCount = playerCount;
     gameState.starsKept = starsKept;
@@ -275,14 +285,18 @@ function updateProgressBars() {
     const qptsPercentage = Math.min((gameState.totalQPts / QUALITY_POINTS_MINIMUM) * 100, 100);
     const qptsFill = document.getElementById('qptsProgress');
     qptsFill.style.width = `${qptsPercentage}%`;
-    document.getElementById('qptsPercentage').textContent = `${gameState.totalQPts}/64`;
+    document.getElementById('qptsPercentage').textContent = `${gameState.totalQPts}/${QUALITY_POINTS_MINIMUM}`;
 }
 
 function validateRules() {
+    // Bird Rights logic: You can go over cap if non-Bird Rights players are under cap
+    // This allows signing Bird Rights players even when over the cap
+    const underCapWithBirdRights = gameState.payrollWithoutBirdRights <= SALARY_CAP;
+
     const rules = {
         rosterSize: gameState.playerCount >= 12 && gameState.playerCount <= 15,
-        underCap: gameState.totalPayroll <= SALARY_CAP,
-        starsKept: gameState.starsKept === 3,
+        underCap: underCapWithBirdRights,  // Allow going over cap if only due to Bird Rights players
+        starsKept: gameState.starsKept >= 2,  // Changed to at least 2 stars
         qualityPoints: gameState.totalQPts >= QUALITY_POINTS_MINIMUM
     };
 
