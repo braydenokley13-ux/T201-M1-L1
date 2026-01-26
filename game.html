@@ -102,13 +102,45 @@
     <div class="modal" id="successModal">
         <div class="modal-content">
             <div class="confetti-container" id="confetti"></div>
-            <h2>🎉 YOU DID IT! 🎉</h2>
-            <p>You've successfully managed the Knicks roster!</p>
-            <div class="claim-code">
-                <label>Your Claim Code:</label>
-                <div class="code-display" id="claimCode">KNICKS2025</div>
+            <h2>🎉 SEASON COMPLETE! 🎉</h2>
+
+            <div class="season-results">
+                <div class="tier-badge">
+                    <div class="tier-icon">🏆</div>
+                    <div class="tier-label">YOUR TIER</div>
+                    <div class="tier-name" id="tierName">Championship</div>
+                </div>
+
+                <div class="season-stats">
+                    <div class="stat-row">
+                        <span class="stat-label">Regular Season:</span>
+                        <span class="stat-value" id="seasonRecord">62-20</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Playoff Result:</span>
+                        <span class="stat-value" id="playoffResult">NBA Champions!</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Total Quality:</span>
+                        <span class="stat-value" id="finalQPts">0 pts</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Cap Efficiency:</span>
+                        <span class="stat-value" id="capEfficiency">0%</span>
+                    </div>
+                </div>
+
+                <div class="tier-description" id="tierDescription">
+                    Outstanding roster construction! Championship caliber team!
+                </div>
             </div>
-            <button class="modal-btn" id="closeModal">Keep Playing</button>
+
+            <div class="claim-code">
+                <label>🎫 Your Claim Code:</label>
+                <div class="code-display" id="claimCode">CHAMPS2026</div>
+            </div>
+
+            <button class="modal-btn" id="closeModal">🔄 Build Another Roster</button>
         </div>
     </div>
 

@@ -580,13 +580,117 @@ body {
 .modal-content h2 {
     font-size: 2.5em;
     color: #F58426;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.season-results {
+    margin-bottom: 30px;
+}
+
+.tier-badge {
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
+    text-align: center;
+}
+
+.tier-icon {
+    font-size: 3em;
+    margin-bottom: 5px;
+}
+
+.tier-label {
+    font-size: 0.8em;
+    color: rgba(0, 0, 0, 0.6);
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+}
+
+.tier-name {
+    font-size: 2em;
+    font-weight: 900;
+    color: #1a1a2e;
+    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.3);
+}
+
+.season-stats {
+    background: rgba(0, 107, 182, 0.05);
+    border-radius: 15px;
+    padding: 20px;
     margin-bottom: 20px;
 }
 
-.modal-content p {
-    font-size: 1.2em;
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(0, 107, 182, 0.1);
+}
+
+.stat-row:last-child {
+    border-bottom: none;
+}
+
+.stat-row .stat-label {
+    font-size: 1em;
     color: #666;
-    margin-bottom: 30px;
+    font-weight: 600;
+}
+
+.stat-row .stat-value {
+    font-size: 1.1em;
+    color: #006BB6;
+    font-weight: 800;
+}
+
+.tier-description {
+    font-size: 1.1em;
+    color: #F58426;
+    font-weight: 700;
+    text-align: center;
+    line-height: 1.6;
+    padding: 15px;
+    background: rgba(245, 132, 38, 0.1);
+    border-radius: 10px;
+    border: 2px solid rgba(245, 132, 38, 0.3);
+}
+
+/* Tier-specific styling */
+.tier-dynasty .tier-badge,
+.tier-all-star-dynasty .tier-badge {
+    background: linear-gradient(135deg, #FFD700, #FF6B6B, #4ECDC4);
+    animation: rainbow 3s ease infinite;
+}
+
+.tier-championship .tier-badge {
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+}
+
+.tier-superteam .tier-badge {
+    background: linear-gradient(135deg, #9C27B0, #E91E63);
+}
+
+.tier-contender .tier-badge {
+    background: linear-gradient(135deg, #006BB6, #4a9fd8);
+}
+
+.tier-playoff-team .tier-badge {
+    background: linear-gradient(135deg, #4CAF50, #66BB6A);
+}
+
+.tier-scrappy-team .tier-badge {
+    background: linear-gradient(135deg, #FF9800, #FFB74D);
+}
+
+@keyframes rainbow {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
 }
 
 .claim-code {
@@ -595,8 +699,9 @@ body {
 
 .claim-code label {
     display: block;
-    font-size: 0.9em;
+    font-size: 1em;
     color: #666;
+    font-weight: 700;
     margin-bottom: 10px;
 }
 
