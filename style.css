@@ -262,8 +262,15 @@ body {
 }
 
 .player-card.traded {
-    opacity: 0.7;
-    background: rgba(200, 200, 200, 0.95);
+    opacity: 0.6;
+    filter: grayscale(0.5);
+    background: rgba(255, 152, 0, 0.05);
+    border: 2px solid rgba(255, 152, 0, 0.3);
+}
+
+.player-card.traded::before {
+    background: linear-gradient(90deg, #FF9800, #FFB74D);
+    height: 5px;
 }
 
 .player-card.free-agent::before {
@@ -1006,6 +1013,12 @@ body {
     background: linear-gradient(135deg, #4CAF50, #66BB6A);
     color: white;
     box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+}
+
+.trade-badge {
+    background: linear-gradient(135deg, #FF9800, #FFB74D);
+    color: white;
+    box-shadow: 0 2px 8px rgba(255, 152, 0, 0.3);
 }
 
 .player-badges {

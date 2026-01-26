@@ -64,7 +64,8 @@ function renderPlayers() {
 
 function createPlayerCard(player, index) {
     const card = document.createElement('div');
-    card.className = `player-card ${player.isStar ? 'star' : ''} ${player.status === 'Cut' ? 'cut' : ''} ${!player.isKnick ? 'free-agent' : ''}`;
+    const statusClass = player.status === 'Cut' ? 'cut' : player.status === 'Trade' ? 'traded' : '';
+    card.className = `player-card ${player.isStar ? 'star' : ''} ${statusClass} ${!player.isKnick ? 'free-agent' : ''}`;
     card.id = `player-${player.id}`;
 
     // Calculate effective salary for display
@@ -85,7 +86,9 @@ function createPlayerCard(player, index) {
         <div class="player-header">
             <div class="player-number">${player.number}</div>
             ${player.isStar ? '<div class="star-badge">⭐</div>' : ''}
-            ${player.status === 'Cut' ? '<div class="status-badge cut-badge">AVAILABLE</div>' : '<div class="status-badge signed-badge">SIGNED</div>'}
+            ${player.status === 'Cut' ? '<div class="status-badge cut-badge">AVAILABLE</div>' :
+              player.status === 'Trade' ? '<div class="status-badge trade-badge">TRADED</div>' :
+              '<div class="status-badge signed-badge">SIGNED</div>'}
         </div>
         <div class="player-info">
             <div class="player-name">${player.name}</div>
@@ -106,6 +109,7 @@ function createPlayerCard(player, index) {
                 <select class="move-select" data-player-id="${player.id}" onchange="handleMoveChange(${player.id}, this.value)">
                     <option value="Cut" ${player.status === 'Cut' ? 'selected' : ''}>✗ CUT</option>
                     <option value="Sign" ${player.status === 'Sign' ? 'selected' : ''}>✓ SIGN</option>
+                    ${player.isKnick ? `<option value="Trade" ${player.status === 'Trade' ? 'selected' : ''}>↔ TRADE</option>` : ''}
                 </select>
             </div>
             <div class="player-badges">
@@ -155,8 +159,8 @@ function handleMoveChange(playerId, status) {
 
     gameState.players[playerIndex].status = status;
 
-    // If cutting a player, reset their exceptions
-    if (status === 'Cut') {
+    // If cutting or trading a player, reset their exceptions
+    if (status === 'Cut' || status === 'Trade') {
         gameState.players[playerIndex].useMLE = false;
         gameState.players[playerIndex].useVetMin = false;
     }
