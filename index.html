@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Knicks Cap Crash 🏀</title>
+    <title>Knicks Cap Crash v2</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,13 +12,13 @@
 
         <div class="landing-container">
             <div class="landing-header">
-                <h1 class="landing-title">🏀 KNICKS CAP CRASH 🏀</h1>
-                <div class="landing-badge">Summer 2026</div>
+                <h1 class="landing-title">&#x1F3C0; KNICKS CAP CRASH &#x1F3C0;</h1>
+                <div class="landing-badge">Summer 2026 &bull; v2</div>
             </div>
 
             <div class="story-container">
                 <div class="story-section">
-                    <h2 class="story-heading">📰 THE SITUATION</h2>
+                    <h2 class="story-heading">&#x1F4F0; THE SITUATION</h2>
                     <p class="story-text">
                         It's the summer of 2026. The New York Knicks just completed an incredible championship run,
                         bringing the Larry O'Brien trophy back to Madison Square Garden for the first time in over 50 years.
@@ -26,56 +26,96 @@
                 </div>
 
                 <div class="story-section">
-                    <h2 class="story-heading">💥 THE CRISIS</h2>
+                    <h2 class="story-heading">&#x1F4A5; THE CRISIS</h2>
                     <p class="story-text">
-                        But there's a problem. The NBA's salary cap has <strong>crashed to just $120 million</strong> due to
+                        But there's a problem. The NBA's salary cap has <strong>crashed</strong> due to
                         economic pressures. With massive luxury tax penalties looming, the Knicks front office made the
                         devastating decision to <strong>release EVERY player</strong> on the roster.
                     </p>
                 </div>
 
                 <div class="story-section">
-                    <h2 class="story-heading">🎯 YOUR MISSION</h2>
+                    <h2 class="story-heading">&#x1F3AF; YOUR MISSION</h2>
                     <p class="story-text">
                         You've been hired as the new General Manager. Your job: <strong>rebuild the championship roster</strong>
-                        while staying under the $120M salary cap. You can re-sign Knicks players or bring in star free agents like
-                        <strong>LeBron, Curry, Butler, and more!</strong> You'll need to:
+                        while staying under the salary cap. You can re-sign Knicks players or bring in star free agents like
+                        <strong>LeBron, Curry, Butler, and more!</strong>
                     </p>
-                    <ul class="mission-list">
-                        <li>✓ Sign between <strong>10-13 players</strong></li>
-                        <li>✓ Keep at least <strong>2 of 3 star players</strong> (Brunson, Towns, Bridges)</li>
-                        <li>✓ Achieve at least <strong>85 quality points</strong></li>
-                        <li>✓ Stay under the <strong>$120M salary cap</strong></li>
-                        <li>✓ Use cap exceptions wisely (Bird Rights, MLE, Vet Minimum)</li>
-                        <li>✓ Sign free agents to fill gaps (LeBron, Curry, and more available!)</li>
-                    </ul>
                 </div>
 
                 <div class="story-section">
-                    <h2 class="story-heading">🔧 CAP EXCEPTIONS AVAILABLE</h2>
+                    <h2 class="story-heading">&#x1F527; CAP EXCEPTIONS AVAILABLE</h2>
                     <div class="exceptions-grid">
                         <div class="exception-card">
-                            <div class="exception-icon">🦅</div>
+                            <div class="exception-icon">&#x1F985;</div>
                             <h3>Bird Rights</h3>
-                            <p>Re-sign your own players even over the cap (auto-applies when needed)</p>
+                            <p>Re-sign your own players even over the cap (like a loyalty discount!)</p>
                         </div>
                         <div class="exception-card">
-                            <div class="exception-icon">💰</div>
+                            <div class="exception-icon">&#x1F4B0;</div>
                             <h3>Mid-Level Exception</h3>
-                            <p>Use on ONE player to reduce their cap hit by 50%</p>
+                            <p>Use on ONE player to cut their salary &mdash; like a coupon!</p>
                         </div>
                         <div class="exception-card">
-                            <div class="exception-icon">📉</div>
+                            <div class="exception-icon">&#x1F4C9;</div>
                             <h3>Veteran Minimum</h3>
-                            <p>Sign up to 3 low-impact players (< 5 Q-Pts) for just $2M each</p>
+                            <p>Sign experienced players for just $2M each</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <button class="start-game-btn" onclick="window.location.href='game.html'">
-                🏀 START YOUR GM CAREER 🏀
+            <!-- Difficulty Selector -->
+            <div class="difficulty-selector">
+                <h2 class="difficulty-heading">Choose Your Difficulty</h2>
+                <div class="difficulty-grid">
+                    <div class="difficulty-card" id="diffCard-rookie" onclick="selectDifficulty('rookie')">
+                        <div class="difficulty-icon">&#x1F31F;</div>
+                        <h3 class="difficulty-name">Rookie</h3>
+                        <p class="difficulty-desc">More cap space, fewer requirements. Great for learning!</p>
+                        <ul class="difficulty-details">
+                            <li>$140M salary cap</li>
+                            <li>75+ Quality Points</li>
+                            <li>Keep 1+ stars</li>
+                            <li>Coach hints included</li>
+                        </ul>
+                    </div>
+                    <div class="difficulty-card selected" id="diffCard-pro" onclick="selectDifficulty('pro')">
+                        <div class="difficulty-icon">&#x1F3C0;</div>
+                        <h3 class="difficulty-name">Pro</h3>
+                        <p class="difficulty-desc">The real deal &mdash; standard salary cap challenge.</p>
+                        <ul class="difficulty-details">
+                            <li>$120M salary cap</li>
+                            <li>85+ Quality Points</li>
+                            <li>Keep 2+ stars</li>
+                            <li>Hints on request</li>
+                        </ul>
+                    </div>
+                    <div class="difficulty-card" id="diffCard-legend" onclick="selectDifficulty('legend')">
+                        <div class="difficulty-icon">&#x1F451;</div>
+                        <h3 class="difficulty-name">Legend</h3>
+                        <p class="difficulty-desc">Elite GM challenge &mdash; tighter cap, harder rules.</p>
+                        <ul class="difficulty-details">
+                            <li>$110M salary cap</li>
+                            <li>90+ Quality Points</li>
+                            <li>Nerfed exceptions</li>
+                            <li>No hints!</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <button class="start-game-btn" id="startGameBtn" onclick="startGame()">
+                &#x1F3C0; START YOUR GM CAREER &#x1F3C0;
             </button>
+
+            <!-- Trophy Case (shown if player has progress) -->
+            <div class="trophy-case" id="trophyCase" style="display:none;">
+                <h2 class="trophy-heading">&#x1F3C6; Your Trophy Case</h2>
+                <div class="trophy-difficulties" id="trophyDifficulties"></div>
+                <div class="trophy-codes" id="trophyCodes"></div>
+                <div class="trophy-achievements" id="trophyAchievements"></div>
+            </div>
 
             <div class="landing-footer">
                 <p>Can you rebuild the dynasty?</p>
@@ -83,14 +123,105 @@
         </div>
     </div>
 
+    <script src="config.js"></script>
+    <script src="storage.js"></script>
+    <script src="achievements.js"></script>
     <script>
+        // Selected difficulty (default: pro)
+        var selectedDifficulty = 'pro';
+
+        function selectDifficulty(key) {
+            selectedDifficulty = key;
+
+            // Update visual selection
+            document.querySelectorAll('.difficulty-card').forEach(function(card) {
+                card.classList.remove('selected');
+            });
+            document.getElementById('diffCard-' + key).classList.add('selected');
+
+            // Update start button text
+            var config = CapCrash.DIFFICULTIES[key];
+            document.getElementById('startGameBtn').innerHTML =
+                config.icon + ' START ' + config.label.toUpperCase() + ' MODE ' + config.icon;
+        }
+
+        function startGame() {
+            sessionStorage.setItem('capcrash_difficulty', selectedDifficulty);
+            window.location.href = 'game.html';
+        }
+
+        // Load trophy case
+        function loadTrophyCase() {
+            var profile = CapCrash.Storage.getProfile();
+
+            // Check if there's any progress
+            var hasProgress = profile.gamesWon > 0 || profile.achievements.length > 0;
+            var trophyCase = document.getElementById('trophyCase');
+            if (!hasProgress) {
+                trophyCase.style.display = 'none';
+                return;
+            }
+
+            trophyCase.style.display = 'block';
+
+            // Difficulties beaten
+            var diffContainer = document.getElementById('trophyDifficulties');
+            var diffHtml = '<div class="trophy-diff-grid">';
+            ['rookie', 'pro', 'legend'].forEach(function(key) {
+                var config = CapCrash.DIFFICULTIES[key];
+                var beaten = profile.difficultiesBeaten[key];
+                var bestScore = profile.bestScores[key];
+                diffHtml += '<div class="trophy-diff-card ' + (beaten ? 'beaten' : 'locked') + '">';
+                diffHtml += '<div class="trophy-diff-icon">' + config.icon + '</div>';
+                diffHtml += '<div class="trophy-diff-name">' + config.label + '</div>';
+                if (beaten && bestScore.tier) {
+                    diffHtml += '<div class="trophy-diff-tier">Best: ' + bestScore.tier + '</div>';
+                    diffHtml += '<div class="trophy-diff-score">' + bestScore.qpts + ' Q-Pts</div>';
+                } else {
+                    diffHtml += '<div class="trophy-diff-tier">Not yet beaten</div>';
+                }
+                diffHtml += '</div>';
+            });
+            diffHtml += '</div>';
+            diffContainer.innerHTML = diffHtml;
+
+            // Claim codes
+            var codesContainer = document.getElementById('trophyCodes');
+            if (profile.claimCodes.length > 0) {
+                var codesHtml = '<h3>Your Claim Codes</h3><div class="trophy-codes-list">';
+                profile.claimCodes.forEach(function(entry) {
+                    codesHtml += '<div class="trophy-code-item">';
+                    codesHtml += '<span class="trophy-code-value">' + entry.code + '</span>';
+                    codesHtml += '<span class="trophy-code-meta">' + entry.difficulty + ' - ' + entry.tier + '</span>';
+                    codesHtml += '</div>';
+                });
+                codesHtml += '</div>';
+                codesContainer.innerHTML = codesHtml;
+            }
+
+            // Achievements
+            var achContainer = document.getElementById('trophyAchievements');
+            var allAch = CapCrash.Achievements.getAllWithStatus();
+            var earnedCount = allAch.filter(function(a) { return a.earned; }).length;
+            var achHtml = '<h3>Achievements (' + earnedCount + '/' + allAch.length + ')</h3>';
+            achHtml += '<div class="trophy-ach-grid">';
+            allAch.forEach(function(ach) {
+                achHtml += '<div class="trophy-ach-item ' + (ach.earned ? 'earned' : 'locked') + '" title="' + ach.description + '">';
+                achHtml += '<span class="trophy-ach-icon">' + (ach.earned ? ach.icon : '&#x1F512;') + '</span>';
+                achHtml += '<span class="trophy-ach-name">' + (ach.earned ? ach.name : '???') + '</span>';
+                achHtml += '</div>';
+            });
+            achHtml += '</div>';
+            achContainer.innerHTML = achHtml;
+        }
+
         // Create particles for landing page
         function createLandingParticles() {
-            const container = document.getElementById('landingParticles');
-            const colors = ['#F58426', '#006BB6'];
+            var container = document.getElementById('landingParticles');
+            var colors = ['#F58426', '#006BB6'];
 
-            for (let i = 0; i < 40; i++) {
-                const particle = document.createElement('div');
+            for (var i = 0; i < 40; i++) {
+                var particle = document.createElement('div');
                 particle.className = 'particle';
                 particle.style.width = Math.random() * 6 + 3 + 'px';
                 particle.style.height = particle.style.width;
@@ -99,12 +230,13 @@
                 particle.style.top = Math.random() * 100 + '%';
                 particle.style.animationDuration = (Math.random() * 10 + 5) + 's';
                 particle.style.animationDelay = Math.random() * 5 + 's';
-
                 container.appendChild(particle);
             }
         }
 
         createLandingParticles();
+        loadTrophyCase();
+        selectDifficulty('pro'); // Default selection
     </script>
 </body>
 </html>
