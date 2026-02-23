@@ -511,41 +511,6 @@ body {
     transform: translateY(0);
 }
 
-/* Status Banner */
-.status-banner {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(135deg, #1a1a2e, #2d2d44);
-    padding: 20px;
-    text-align: center;
-    z-index: 100;
-    box-shadow: 0 -5px 20px rgba(0,0,0,0.3);
-    transition: all 0.3s ease;
-}
-
-.status-content {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
-    font-size: 1.2em;
-    font-weight: 700;
-    color: white;
-}
-
-#statusIcon {
-    font-size: 1.5em;
-}
-
-.status-banner.success {
-    background: linear-gradient(135deg, #4CAF50, #66BB6A);
-}
-
-.status-banner.fail {
-    background: linear-gradient(135deg, #F44336, #EF5350);
-}
 
 /* Modal */
 .modal {
@@ -1411,7 +1376,7 @@ body {
 .trade-player-name-big {
     font-size: 1.2em;
     font-weight: 700;
-    color: #fff;
+    color: #d0d0d0;
 }
 
 .trade-player-salary-big {
@@ -1479,7 +1444,7 @@ body {
 .trade-player-name {
     font-size: 0.9em;
     font-weight: 600;
-    color: #fff;
+    color: #c8c8c8;
 }
 
 .trade-player-pos {
