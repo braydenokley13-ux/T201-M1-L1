@@ -571,7 +571,6 @@ function validateRules() {
     updateRuleUI('rulePosition', rules.positionBalance);
 
     const allRulesPass = Object.values(rules).every(rule => rule === true);
-    updateStatusBanner(allRulesPass);
 
     if (allRulesPass && !gameState.hasWon) {
         gameState.hasWon = true;
@@ -595,21 +594,6 @@ function updateRuleUI(ruleId, passed) {
     }
 }
 
-function updateStatusBanner(success) {
-    const banner = document.getElementById('statusBanner');
-    const icon = document.getElementById('statusIcon');
-    const text = document.getElementById('statusText');
-    banner.classList.remove('success', 'fail');
-    if (success) {
-        banner.classList.add('success');
-        icon.textContent = '🎉';
-        text.textContent = 'Perfect! You rebuilt the championship roster!';
-    } else {
-        banner.classList.add('fail');
-        icon.textContent = '⚠️';
-        text.textContent = 'Keep building! Check the rules on the right.';
-    }
-}
 
 // === SUCCESS MODAL ===
 function showSuccessModal() {
