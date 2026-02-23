@@ -33,6 +33,11 @@
             <div class="stat-card">
                 <div class="stat-label">Players</div>
                 <div class="stat-value" id="playerCount">0</div>
+                <div class="position-display">
+                    <span class="pos-badge pos-unmet" id="posG">G:0</span>
+                    <span class="pos-badge pos-unmet" id="posF">F:0</span>
+                    <span class="pos-badge pos-unmet" id="posC">C:0</span>
+                </div>
             </div>
         </div>
 
@@ -50,6 +55,19 @@
                     <div class="progress-fill qpts-fill" id="qptsProgress"></div>
                 </div>
                 <span id="qptsPercentage">0/85</span>
+            </div>
+        </div>
+
+        <!-- Cap Breakdown Visual -->
+        <div class="cap-breakdown-wrapper">
+            <div class="cap-breakdown-label">Salary Breakdown</div>
+            <div class="cap-breakdown" id="capBreakdown">
+                <div class="breakdown-empty">Sign players to see cap breakdown</div>
+            </div>
+            <div class="cap-breakdown-legend">
+                <span class="legend-item legend-star">⭐ Star</span>
+                <span class="legend-item legend-rotation">🔵 Rotation</span>
+                <span class="legend-item legend-vetmin">⚪ Vet Min</span>
             </div>
         </div>
 
@@ -77,13 +95,18 @@
                         <span class="rule-icon">⏳</span>
                         <span class="rule-text">Quality Points ≥ 85</span>
                     </div>
+                    <div class="rule-item" id="rulePosition">
+                        <span class="rule-icon">⏳</span>
+                        <span class="rule-text">Lineup Balance (2G/2F/1C)</span>
+                    </div>
                 </div>
 
                 <div class="info-box">
                     <h4>💡 Cap Exceptions</h4>
                     <p><strong>🦅 Bird Rights:</strong> Players with 🦅 can be signed even over the cap!</p>
                     <p><strong>💰 MLE:</strong> Check to use on 1 player for 50% off salary</p>
-                    <p><strong>📉 Vet Min:</strong> Check to use on up to 3 players (< 5 Q-Pts) for $2M each</p>
+                    <p><strong>📉 Vet Min:</strong> Check to use on up to 3 players (&lt; 5 Q-Pts) for $2M each</p>
+                    <p><strong>↔ Trade:</strong> Trade Knicks players — you must receive a salary-matched return</p>
                 </div>
 
                 <button class="reset-btn" id="resetBtn">🔄 Reset Game</button>
@@ -128,6 +151,10 @@
                         <span class="stat-label">Cap Efficiency:</span>
                         <span class="stat-value" id="capEfficiency">0%</span>
                     </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Season Luck:</span>
+                        <span class="stat-value luck-value" id="luckRating">⚖️ Average Luck</span>
+                    </div>
                 </div>
 
                 <div class="tier-description" id="tierDescription">
@@ -140,7 +167,67 @@
                 <div class="code-display" id="claimCode">CHAMPS2026</div>
             </div>
 
-            <button class="modal-btn" id="closeModal">🔄 Build Another Roster</button>
+            <!-- Share Build -->
+            <div class="share-build">
+                <label>🔗 Share Your Build:</label>
+                <div class="share-row">
+                    <input type="text" class="share-link-input" id="shareLink" readonly placeholder="Generating link..." />
+                    <button class="copy-link-btn" id="copyLinkBtn" onclick="copyShareLink()">📋 Copy</button>
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button class="modal-btn simulate-again-btn" id="simulateAgainBtn">🎲 Simulate Again</button>
+                <button class="modal-btn" id="closeModal">🔄 Build Another Roster</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Trade Modal -->
+    <div class="modal" id="tradeModal">
+        <div class="modal-content trade-modal-content">
+            <h2>↔ TRADE NEGOTIATION</h2>
+            <div class="trade-sending">
+                <div class="trade-sending-label">TRADING AWAY</div>
+                <div class="trade-sending-player">
+                    <span class="trade-player-name-big" id="tradeModalPlayerName">Player Name</span>
+                    <span class="trade-player-salary-big" id="tradeModalSalary">$0M</span>
+                </div>
+                <div class="trade-match-rule">
+                    Salary match limit: <strong id="tradeModalMaxReturn">$0M</strong> (125% rule)
+                </div>
+            </div>
+
+            <div class="trade-returns-section">
+                <h3 class="trade-section-title">✅ Eligible Trade Returns</h3>
+                <div class="trade-player-list" id="tradeEligibleList">
+                    <!-- Populated by JS -->
+                </div>
+
+                <div class="trade-ineligible-section" id="tradeIneligibleSection">
+                    <div class="trade-player-list" id="tradeIneligibleList">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <button class="cancel-trade-btn" onclick="cancelTrade()">✗ Cancel Trade</button>
+        </div>
+    </div>
+
+    <!-- Tutorial Overlay -->
+    <div class="tutorial-overlay" id="tutorialOverlay">
+        <div class="tutorial-tooltip" id="tutorialTooltip">
+            <div class="tutorial-header">
+                <span class="tutorial-badge">HOW TO PLAY</span>
+                <span class="tutorial-counter" id="tutorialCounter">1 / 5</span>
+            </div>
+            <h3 class="tutorial-title" id="tutorialTitle">Welcome!</h3>
+            <p class="tutorial-text" id="tutorialText">Let's walk through the basics.</p>
+            <div class="tutorial-actions">
+                <button class="tutorial-skip-btn" onclick="skipTutorial()">Skip</button>
+                <button class="tutorial-next-btn" id="tutorialNext" onclick="nextTutorialStep()">Next →</button>
+            </div>
         </div>
     </div>
 

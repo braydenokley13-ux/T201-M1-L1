@@ -1252,3 +1252,538 @@ body {
         font-size: 1em;
     }
 }
+
+/* ===================================================
+   V2 ADDITIONS
+   =================================================== */
+
+/* Position badges in scoreboard */
+.position-display {
+    display: flex;
+    gap: 4px;
+    justify-content: center;
+    margin-top: 6px;
+    flex-wrap: wrap;
+}
+
+.pos-badge {
+    font-size: 0.7em;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 10px;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+}
+
+.pos-met {
+    background: rgba(76, 175, 80, 0.25);
+    color: #81C784;
+    border: 1px solid rgba(76, 175, 80, 0.5);
+}
+
+.pos-unmet {
+    background: rgba(255, 255, 255, 0.05);
+    color: #888;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Cap breakdown bar */
+.cap-breakdown-wrapper {
+    max-width: 1200px;
+    margin: 0 auto 20px;
+    padding: 0 20px;
+}
+
+.cap-breakdown-label {
+    font-size: 0.8em;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+}
+
+.cap-breakdown {
+    display: flex;
+    height: 28px;
+    border-radius: 6px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    gap: 2px;
+    padding: 2px;
+}
+
+.breakdown-segment {
+    border-radius: 3px;
+    transition: all 0.4s ease;
+    cursor: default;
+    position: relative;
+}
+
+.breakdown-segment:hover::after {
+    content: attr(title);
+    position: absolute;
+    bottom: 110%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.85);
+    color: #fff;
+    font-size: 0.75em;
+    padding: 4px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+    z-index: 100;
+    pointer-events: none;
+}
+
+.seg-star {
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+}
+
+.seg-rotation {
+    background: linear-gradient(135deg, #006BB6, #4a9fd8);
+}
+
+.seg-vetmin {
+    background: linear-gradient(135deg, #555, #777);
+}
+
+.breakdown-empty {
+    color: #555;
+    font-size: 0.8em;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    width: 100%;
+}
+
+.cap-breakdown-legend {
+    display: flex;
+    gap: 16px;
+    margin-top: 6px;
+}
+
+.legend-item {
+    font-size: 0.72em;
+    color: #888;
+}
+
+/* Trade return player card accent */
+.player-card.trade-return {
+    border-top: 3px solid #9C27B0;
+}
+
+/* Trade modal */
+.trade-modal-content {
+    max-width: 520px;
+    max-height: 85vh;
+    overflow-y: auto;
+}
+
+.trade-modal-content h2 {
+    color: #9C27B0;
+    margin-bottom: 16px;
+}
+
+.trade-sending {
+    background: rgba(156, 39, 176, 0.1);
+    border: 1px solid rgba(156, 39, 176, 0.3);
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+}
+
+.trade-sending-label {
+    font-size: 0.72em;
+    color: #CE93D8;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+}
+
+.trade-sending-player {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.trade-player-name-big {
+    font-size: 1.2em;
+    font-weight: 700;
+    color: #fff;
+}
+
+.trade-player-salary-big {
+    font-size: 1.1em;
+    font-weight: 700;
+    color: #F58426;
+}
+
+.trade-match-rule {
+    font-size: 0.8em;
+    color: #aaa;
+}
+
+.trade-match-rule strong {
+    color: #4CAF50;
+}
+
+.trade-section-title {
+    font-size: 0.9em;
+    color: #4CAF50;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.trade-player-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 12px;
+    max-height: 280px;
+    overflow-y: auto;
+}
+
+.trade-player-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.trade-player-row:hover:not(.ineligible) {
+    background: rgba(76, 175, 80, 0.15);
+    border-color: rgba(76, 175, 80, 0.4);
+    transform: translateY(-1px);
+}
+
+.trade-player-row.ineligible {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.trade-player-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.trade-player-name {
+    font-size: 0.9em;
+    font-weight: 600;
+    color: #fff;
+}
+
+.trade-player-pos {
+    font-size: 0.72em;
+    color: #888;
+}
+
+.trade-player-stats {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+}
+
+.trade-player-salary {
+    font-size: 0.85em;
+    font-weight: 700;
+    color: #F58426;
+}
+
+.trade-player-qpts {
+    font-size: 0.72em;
+    color: #4a9fd8;
+}
+
+.trade-select-btn {
+    background: linear-gradient(135deg, #4CAF50, #388E3C);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 0.75em;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: all 0.2s ease;
+}
+
+.trade-select-btn:hover {
+    transform: scale(1.05);
+}
+
+.trade-blocked-label {
+    font-size: 0.72em;
+    font-weight: 700;
+    color: #F44336;
+    letter-spacing: 0.5px;
+}
+
+.trade-ineligible-header {
+    font-size: 0.78em;
+    color: #F44336;
+    font-weight: 600;
+    margin-bottom: 8px;
+    padding-top: 4px;
+}
+
+.trade-empty {
+    color: #666;
+    font-size: 0.85em;
+    padding: 12px;
+    text-align: center;
+}
+
+.cancel-trade-btn {
+    width: 100%;
+    background: rgba(244, 67, 54, 0.15);
+    color: #EF9A9A;
+    border: 1px solid rgba(244, 67, 54, 0.3);
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 0.9em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 8px;
+}
+
+.cancel-trade-btn:hover {
+    background: rgba(244, 67, 54, 0.25);
+}
+
+/* Modal updates: simulate again + share */
+.modal-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 16px;
+}
+
+.simulate-again-btn {
+    background: linear-gradient(135deg, #9C27B0, #7B1FA2) !important;
+}
+
+.luck-value {
+    font-size: 0.95em !important;
+}
+
+.share-build {
+    margin: 12px 0;
+}
+
+.share-build label {
+    display: block;
+    font-size: 0.85em;
+    color: #aaa;
+    margin-bottom: 6px;
+}
+
+.share-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.share-link-input {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 6px;
+    padding: 8px 10px;
+    color: #ccc;
+    font-size: 0.78em;
+    font-family: monospace;
+    min-width: 0;
+}
+
+.copy-link-btn {
+    background: linear-gradient(135deg, #006BB6, #4a9fd8);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-size: 0.8em;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.copy-link-btn:hover {
+    transform: scale(1.04);
+}
+
+/* Tutorial overlay */
+.tutorial-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    z-index: 2000;
+    display: none;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 80px;
+    pointer-events: none;
+}
+
+.tutorial-overlay.show {
+    display: flex;
+    pointer-events: all;
+}
+
+.tutorial-tooltip {
+    background: linear-gradient(135deg, #1a1a3e, #0d1b2a);
+    border: 1px solid rgba(245, 132, 38, 0.5);
+    border-radius: 16px;
+    padding: 22px 26px;
+    max-width: 420px;
+    width: calc(100% - 40px);
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(30px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+}
+
+.tutorial-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.tutorial-badge {
+    font-size: 0.68em;
+    font-weight: 700;
+    color: #F58426;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+.tutorial-counter {
+    font-size: 0.75em;
+    color: #666;
+}
+
+.tutorial-title {
+    font-size: 1.1em;
+    font-weight: 700;
+    color: #fff;
+    margin: 0 0 8px;
+}
+
+.tutorial-text {
+    font-size: 0.88em;
+    color: #bbb;
+    line-height: 1.6;
+    margin-bottom: 16px;
+}
+
+.tutorial-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.tutorial-skip-btn {
+    background: transparent;
+    border: none;
+    color: #666;
+    font-size: 0.82em;
+    cursor: pointer;
+    padding: 6px 0;
+    transition: color 0.2s;
+}
+
+.tutorial-skip-btn:hover {
+    color: #aaa;
+}
+
+.tutorial-next-btn {
+    background: linear-gradient(135deg, #F58426, #e06b10);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 9px 20px;
+    font-size: 0.88em;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.tutorial-next-btn:hover {
+    transform: scale(1.04);
+}
+
+/* Highlight ring for tutorial targets */
+.tutorial-highlight {
+    outline: 3px solid #F58426 !important;
+    outline-offset: 4px;
+    border-radius: 6px;
+    animation: tutorialPulse 1.2s ease-in-out infinite;
+    position: relative;
+    z-index: 1999;
+}
+
+@keyframes tutorialPulse {
+    0%, 100% { outline-color: rgba(245, 132, 38, 0.9); }
+    50%       { outline-color: rgba(245, 132, 38, 0.3); }
+}
+
+/* Continue button on landing (added by JS if save exists) */
+.continue-game-btn {
+    display: block;
+    margin: 0 auto 16px;
+    background: linear-gradient(135deg, #4CAF50, #388E3C);
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 18px 48px;
+    font-size: 1.3em;
+    font-weight: 800;
+    cursor: pointer;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    box-shadow: 0 6px 30px rgba(76, 175, 80, 0.4);
+    transition: all 0.3s ease;
+    text-decoration: none;
+    text-align: center;
+}
+
+.continue-game-btn:hover {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 10px 40px rgba(76, 175, 80, 0.6);
+}
+
+@media (max-width: 768px) {
+    .cap-breakdown-wrapper {
+        padding: 0 12px;
+    }
+
+    .trade-modal-content {
+        max-width: 100%;
+    }
+
+    .modal-actions {
+        flex-direction: column;
+    }
+
+    .share-row {
+        flex-wrap: wrap;
+    }
+}

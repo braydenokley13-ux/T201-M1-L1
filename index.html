@@ -73,9 +73,11 @@
                 </div>
             </div>
 
-            <button class="start-game-btn" onclick="window.location.href='game.html'">
-                🏀 START YOUR GM CAREER 🏀
-            </button>
+            <div id="landingCTA">
+                <button class="start-game-btn" onclick="window.location.href='game.html'">
+                    🏀 START YOUR GM CAREER 🏀
+                </button>
+            </div>
 
             <div class="landing-footer">
                 <p>Can you rebuild the dynasty?</p>
@@ -105,6 +107,33 @@
         }
 
         createLandingParticles();
+
+        // Show "Continue" button if a saved build exists
+        (function checkSave() {
+            const saved = localStorage.getItem('knicksCapCrash_v2');
+            if (!saved) return;
+            try {
+                const data = JSON.parse(saved);
+                const hasSigned = data.players && data.players.some(p => p.status === 'Sign' || p.status === 'Trade');
+                if (!hasSigned) return;
+                const cta = document.getElementById('landingCTA');
+                const continueBtn = document.createElement('a');
+                continueBtn.href = 'game.html';
+                continueBtn.className = 'continue-game-btn';
+                continueBtn.textContent = '▶ Continue My Build';
+                const freshBtn = document.createElement('button');
+                freshBtn.className = 'start-game-btn';
+                freshBtn.style.marginTop = '12px';
+                freshBtn.textContent = '🏀 Start Fresh 🏀';
+                freshBtn.onclick = function() {
+                    localStorage.removeItem('knicksCapCrash_v2');
+                    window.location.href = 'game.html';
+                };
+                cta.innerHTML = '';
+                cta.appendChild(continueBtn);
+                cta.appendChild(freshBtn);
+            } catch (e) {}
+        })();
     </script>
 </body>
 </html>
