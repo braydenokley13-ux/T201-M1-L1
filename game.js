@@ -135,13 +135,28 @@ function createPlayerCard(player, index, isTradeReturn) {
     // Only original Knicks (not trade returns) can be traded
     const showTradeOption = player.isKnick && !isTradeReturn;
 
+    // Status badge: trade returns use "TRADE CONTRACT" / "WAIVED" labels
+    const statusBadge = (() => {
+        if (player.status === 'Trade') return '<div class="status-badge trade-badge">TRADED</div>';
+        if (isTradeReturn && player.status === 'Sign')  return '<div class="status-badge trade-contract-badge">TRADE CONTRACT</div>';
+        if (isTradeReturn && player.status === 'Cut')   return '<div class="status-badge waived-badge">WAIVED</div>';
+        if (player.status === 'Sign') return '<div class="status-badge signed-badge">SIGNED</div>';
+        return '<div class="status-badge cut-badge">AVAILABLE</div>';
+    })();
+
+    // Dropdown: trade returns show WAIVE instead of CUT; no SIGN option (already on roster)
+    const dropdownOptions = isTradeReturn
+        ? `<option value="Sign" ${player.status === 'Sign' ? 'selected' : ''}>✓ ON ROSTER</option>
+           <option value="Cut"  ${player.status === 'Cut'  ? 'selected' : ''}>✗ WAIVE</option>`
+        : `<option value="Cut"  ${player.status === 'Cut'  ? 'selected' : ''}>✗ CUT</option>
+           <option value="Sign" ${player.status === 'Sign' ? 'selected' : ''}>✓ SIGN</option>
+           ${showTradeOption ? `<option value="Trade" ${player.status === 'Trade' ? 'selected' : ''}>↔ TRADE</option>` : ''}`;
+
     card.innerHTML = `
         <div class="player-header">
             <div class="player-number">${player.number}</div>
             ${player.isStar ? '<div class="star-badge">⭐</div>' : ''}
-            ${player.status === 'Cut' ? '<div class="status-badge cut-badge">AVAILABLE</div>' :
-              player.status === 'Trade' ? '<div class="status-badge trade-badge">TRADED</div>' :
-              '<div class="status-badge signed-badge">SIGNED</div>'}
+            ${statusBadge}
         </div>
         <div class="player-info">
             <div class="player-name">${player.name}</div>
@@ -161,9 +176,7 @@ function createPlayerCard(player, index, isTradeReturn) {
             <div class="control-group">
                 <select class="move-select" data-player-id="${player.id}"
                     onchange="handleMoveChange(${player.id}, this.value, ${isTradeReturn ? 'true' : 'false'})">
-                    <option value="Cut" ${player.status === 'Cut' ? 'selected' : ''}>✗ CUT</option>
-                    <option value="Sign" ${player.status === 'Sign' ? 'selected' : ''}>✓ SIGN</option>
-                    ${showTradeOption ? `<option value="Trade" ${player.status === 'Trade' ? 'selected' : ''}>↔ TRADE</option>` : ''}
+                    ${dropdownOptions}
                 </select>
             </div>
             <div class="player-badges">
@@ -302,11 +315,25 @@ function showTradeModal(playerId) {
 
     eligibleList.innerHTML = eligible.length === 0
         ? '<div class="trade-empty">No eligible trade targets available</div>'
-        : eligible.map(p => `
+        : eligible.map(p => {
+            const capDelta = p.salary - tradedPlayer.salary;
+            const qDelta = p.qpts - tradedPlayer.qpts;
+            const capLabel = capDelta === 0
+                ? '<span class="trade-delta neutral">= same cap</span>'
+                : capDelta > 0
+                    ? `<span class="trade-delta worse">+$${formatSalary(capDelta)} cap</span>`
+                    : `<span class="trade-delta better">-$${formatSalary(Math.abs(capDelta))} cap saved</span>`;
+            const qLabel = qDelta === 0
+                ? '<span class="trade-delta neutral">= same Q-Pts</span>'
+                : qDelta > 0
+                    ? `<span class="trade-delta better">+${qDelta} Q-Pts</span>`
+                    : `<span class="trade-delta worse">${qDelta} Q-Pts</span>`;
+            return `
             <div class="trade-player-row" onclick="confirmTrade(${tradedPlayer.id}, ${p.id})">
                 <div class="trade-player-info">
                     <span class="trade-player-name">${p.name}</span>
                     <span class="trade-player-pos">${p.position}</span>
+                    <div class="trade-deltas">${capLabel} ${qLabel}</div>
                 </div>
                 <div class="trade-player-stats">
                     <span class="trade-player-salary">$${formatSalary(p.salary)}</span>
@@ -314,7 +341,7 @@ function showTradeModal(playerId) {
                 </div>
                 <button class="trade-select-btn">SELECT</button>
             </div>
-        `).join('');
+        `;}).join('');
 
     ineligibleList.innerHTML = ineligible.length === 0
         ? ''
@@ -345,12 +372,12 @@ function confirmTrade(tradedPlayerId, returnPlayerId) {
         gameState.players[playerIndex].useVetMin = false;
     }
 
-    // Add the acquired player to tradeReturns
+    // Add the acquired player to tradeReturns — auto-signed (trade contract, not optional)
     const returnPlayer = gameState.players.find(p => p.id === returnPlayerId);
     if (returnPlayer) {
         gameState.tradeReturns.push({
             ...returnPlayer,
-            status: 'Cut',
+            status: 'Sign',   // Trade acquisitions arrive with their contract active
             useMLE: false,
             useVetMin: false
         });

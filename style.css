@@ -1787,3 +1787,61 @@ body {
         flex-wrap: wrap;
     }
 }
+
+/* Trade contract / waived status badges */
+.trade-contract-badge {
+    background: linear-gradient(135deg, #7B1FA2, #9C27B0);
+    color: #fff;
+    font-size: 0.65em;
+    font-weight: 700;
+    padding: 3px 7px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.waived-badge {
+    background: rgba(117, 117, 117, 0.3);
+    color: #aaa;
+    font-size: 0.65em;
+    font-weight: 700;
+    padding: 3px 7px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+    text-decoration: line-through;
+    text-transform: uppercase;
+}
+
+/* Cap impact + Q-Pts delta tags in trade modal */
+.trade-deltas {
+    display: flex;
+    gap: 5px;
+    margin-top: 4px;
+    flex-wrap: wrap;
+}
+
+.trade-delta {
+    font-size: 0.7em;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 4px;
+    letter-spacing: 0.3px;
+}
+
+.trade-delta.better {
+    background: rgba(76, 175, 80, 0.2);
+    color: #81C784;
+    border: 1px solid rgba(76, 175, 80, 0.35);
+}
+
+.trade-delta.worse {
+    background: rgba(244, 67, 54, 0.15);
+    color: #EF9A9A;
+    border: 1px solid rgba(244, 67, 54, 0.3);
+}
+
+.trade-delta.neutral {
+    background: rgba(255, 255, 255, 0.07);
+    color: #888;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
