@@ -548,7 +548,15 @@ const playersData = [
     }
 ];
 
-// Export for use in game.js
+// Expose for the browser. `const` declarations are NOT attached to `window`,
+// so game.js (which runs inside an IIFE) reads them via window.playersData.
+if (typeof window !== 'undefined') {
+    window.playersData = playersData;
+    window.SALARY_CAP = SALARY_CAP;
+    window.QUALITY_POINTS_MINIMUM = QUALITY_POINTS_MINIMUM;
+}
+
+// Export for Node (tests).
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = { playersData, SALARY_CAP, QUALITY_POINTS_MINIMUM };
 }
