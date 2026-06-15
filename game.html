@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Knicks Cap Crash 🏀</title>
+    <title>Cap Crash — Front Office | Bow Sports Capital</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -11,58 +11,71 @@
         <div class="particles" id="particles"></div>
 
         <header class="game-header">
-            <a href="index.html" class="back-link">← Back to Story</a>
-            <h1 class="game-title">🏀 KNICKS CAP CRASH 🏀</h1>
-            <p class="game-subtitle">Rebuild the championship roster under the $120M salary cap!</p>
+            <a href="index.html" class="back-link">← Mission Briefing</a>
+            <h1 class="game-title">CAP CRASH</h1>
+            <p class="game-subtitle">Front Office Dashboard · Bow Sports Capital · Track 201</p>
         </header>
 
-        <div class="scoreboard">
-            <div class="stat-card">
-                <div class="stat-label">Total Payroll</div>
-                <div class="stat-value" id="totalPayroll">$0</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Cap Space</div>
-                <div class="stat-value" id="capSpace">$120M</div>
-            </div>
-            <div class="stat-card highlight">
-                <div class="stat-label">Quality Points</div>
-                <div class="stat-value qpts" id="totalQPts">0</div>
-                <div class="stat-subtext">Need 85+</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Players</div>
-                <div class="stat-value" id="playerCount">0</div>
-                <div class="position-display">
-                    <span class="pos-badge pos-unmet" id="posG">G:0</span>
-                    <span class="pos-badge pos-unmet" id="posF">F:0</span>
-                    <span class="pos-badge pos-unmet" id="posC">C:0</span>
+        <!-- ============ FRONT OFFICE DASHBOARD ============ -->
+        <!-- Four big metric cards: the only numbers a student must watch -->
+        <div class="scoreboard metrics-board" id="metricsBoard">
+            <div class="metric-card" id="metricCash">
+                <div class="metric-top">
+                    <span class="metric-icon">💰</span>
+                    <span class="metric-name">Cap Space</span>
                 </div>
+                <div class="metric-value" id="capSpaceValue">$120.0M</div>
+                <div class="metric-help">Money left under the cap. Every dollar has a job.</div>
+            </div>
+            <div class="metric-card" id="metricWins">
+                <div class="metric-top">
+                    <span class="metric-icon">🏆</span>
+                    <span class="metric-name">Projected Wins</span>
+                </div>
+                <div class="metric-value" id="winsValue">0</div>
+                <div class="metric-help">Out of 82. How strong your team projects to be.</div>
+            </div>
+            <div class="metric-card" id="metricChem">
+                <div class="metric-top">
+                    <span class="metric-icon">🤝</span>
+                    <span class="metric-name">Chemistry</span>
+                </div>
+                <div class="metric-value" id="chemValue">0<span class="metric-unit">/100</span></div>
+                <div class="metric-help">How well your players fit together.</div>
+            </div>
+            <div class="metric-card" id="metricClout">
+                <div class="metric-top">
+                    <span class="metric-icon">🔥</span>
+                    <span class="metric-name">Clout</span>
+                </div>
+                <div class="metric-value" id="cloutValue">0<span class="metric-unit">/100</span></div>
+                <div class="metric-help">How excited fans, media &amp; sponsors are.</div>
             </div>
         </div>
 
+        <!-- Roster size + budget bar (concrete, glanceable) -->
         <div class="progress-container">
             <div class="progress-bar-wrapper">
-                <label>Cap Usage</label>
+                <label>Budget Used <span class="label-hint">(stay under $120M)</span></label>
                 <div class="progress-bar">
                     <div class="progress-fill cap-fill" id="capProgress"></div>
                 </div>
-                <span id="capPercentage">0%</span>
+                <span id="capPercentage">$0 of $120M</span>
             </div>
             <div class="progress-bar-wrapper">
-                <label>Quality Points</label>
+                <label>Roster Size <span class="label-hint">(need 10–13 players)</span></label>
                 <div class="progress-bar">
-                    <div class="progress-fill qpts-fill" id="qptsProgress"></div>
+                    <div class="progress-fill qpts-fill" id="rosterProgress"></div>
                 </div>
-                <span id="qptsPercentage">0/85</span>
+                <span id="rosterCountLabel">0 players signed</span>
             </div>
         </div>
 
-        <!-- Cap Breakdown Visual -->
+        <!-- Salary breakdown bar -->
         <div class="cap-breakdown-wrapper">
-            <div class="cap-breakdown-label">Salary Breakdown</div>
+            <div class="cap-breakdown-label">Where your money is going</div>
             <div class="cap-breakdown" id="capBreakdown">
-                <div class="breakdown-empty">Sign players to see cap breakdown</div>
+                <div class="breakdown-empty">Sign players to see your salary breakdown</div>
             </div>
             <div class="cap-breakdown-legend">
                 <span class="legend-item legend-star">⭐ Star</span>
@@ -73,149 +86,244 @@
 
         <div class="main-container">
             <div class="roster-grid" id="rosterGrid">
-                <!-- Player cards will be generated here -->
+                <!-- Player cards rendered by game.js -->
             </div>
 
             <aside class="rules-sidebar">
-                <h3>📋 Rule Checks</h3>
+                <h3>📋 Roster Checklist</h3>
+                <p class="sidebar-sub">League rules you must meet to lock your roster:</p>
                 <div class="rule-list" id="rulesList">
                     <div class="rule-item" id="ruleRoster">
                         <span class="rule-icon">⏳</span>
-                        <span class="rule-text">Roster Size (10-13)</span>
+                        <span class="rule-text">10–13 players signed</span>
                     </div>
                     <div class="rule-item" id="ruleCap">
                         <span class="rule-icon">⏳</span>
-                        <span class="rule-text">Under Cap ($120M)</span>
-                    </div>
-                    <div class="rule-item" id="ruleStars">
-                        <span class="rule-icon">⏳</span>
-                        <span class="rule-text">Sign 2+ Stars</span>
-                    </div>
-                    <div class="rule-item" id="ruleQPts">
-                        <span class="rule-icon">⏳</span>
-                        <span class="rule-text">Quality Points ≥ 85</span>
+                        <span class="rule-text">Under the $120M cap</span>
                     </div>
                     <div class="rule-item" id="rulePosition">
                         <span class="rule-icon">⏳</span>
-                        <span class="rule-text">Lineup Balance (2G/2F/1C)</span>
+                        <span class="rule-text">Balanced lineup (2 G / 2 F / 1 C)</span>
+                    </div>
+                </div>
+
+                <h3 class="sidebar-h3-2">🎯 Strategy Tips</h3>
+                <div class="rule-list">
+                    <div class="rule-item rule-guide" id="guideStars">
+                        <span class="rule-icon">💡</span>
+                        <span class="rule-text">Most contenders keep <strong>2+ stars</strong></span>
+                    </div>
+                    <div class="rule-item rule-guide">
+                        <span class="rule-icon">💡</span>
+                        <span class="rule-text">Stacking stars can <strong>lower Chemistry</strong></span>
+                    </div>
+                    <div class="rule-item rule-guide">
+                        <span class="rule-icon">💡</span>
+                        <span class="rule-text">Saving cap keeps you <strong>flexible later</strong></span>
                     </div>
                 </div>
 
                 <div class="info-box">
                     <h4>💡 Cap Exceptions</h4>
-                    <p><strong>🦅 Bird Rights:</strong> Players with 🦅 can be signed even over the cap!</p>
-                    <p><strong>💰 MLE:</strong> Check to use on 1 player for 50% off salary</p>
-                    <p><strong>📉 Vet Min:</strong> Check to use on up to 3 players (&lt; 5 Q-Pts) for $2M each</p>
-                    <p><strong>↔ Trade:</strong> Trade Knicks players — you must receive a salary-matched return</p>
+                    <p><strong>🦅 Bird Rights:</strong> re-sign your own players without it counting against the cap.</p>
+                    <p><strong>💰 MLE:</strong> 50% off ONE player's salary.</p>
+                    <p><strong>📉 Vet Min:</strong> $2M each for up to 3 low-impact players.</p>
                 </div>
 
-                <button class="reset-btn" id="resetBtn">🔄 Reset Game</button>
+                <button class="reset-btn secondary-btn" id="howToBtn">❓ How to Play</button>
+                <button class="reset-btn" id="resetBtn">🔄 Start Over</button>
             </aside>
         </div>
 
-        <div class="status-banner" id="statusBanner">
-            <div class="status-content">
-                <span id="statusIcon">⏳</span>
-                <span id="statusText">Make your moves to build a winning roster!</span>
+        <!-- Sticky action bar: always tells the student the next step -->
+        <div class="action-bar" id="actionBar">
+            <div class="action-status" id="actionStatus">
+                <span id="actionIcon">🛠️</span>
+                <span id="actionText">Build your roster, then head to the trade deadline.</span>
             </div>
+            <button class="primary-action-btn" id="primaryActionBtn">Continue →</button>
         </div>
     </div>
 
-    <!-- Success Modal -->
-    <div class="modal" id="successModal">
-        <div class="modal-content">
+    <!-- ============ ROLE SETUP ============ -->
+    <div class="overlay-screen" id="roleScreen">
+        <div class="overlay-card">
+            <div class="overlay-badge">MISSION SETUP</div>
+            <h2 class="overlay-title">Welcome to the Front Office</h2>
+            <p class="overlay-lead">
+                You've been hired as a <strong>General Manager</strong> for Bow Sports Capital.
+                After the cap crash, your team released everyone. Your job: rebuild a smart roster
+                under a <strong>$120M budget</strong> — and explain your plan.
+            </p>
+
+            <label class="setup-label" for="gmNameInput">What's your GM name?</label>
+            <input type="text" id="gmNameInput" class="setup-input" maxlength="24"
+                   placeholder="e.g. Coach Jordan" autocomplete="off" />
+
+            <label class="setup-label">Pick your front-office style <span class="label-hint">(you can build any way you want)</span></label>
+            <div class="role-options" id="roleOptions">
+                <button class="role-option" data-role="Win-Now Builder">
+                    <span class="role-emoji">🏆</span>
+                    <span class="role-name">Win-Now Builder</span>
+                    <span class="role-desc">Chase wins this season</span>
+                </button>
+                <button class="role-option" data-role="Balanced Architect">
+                    <span class="role-emoji">⚖️</span>
+                    <span class="role-name">Balanced Architect</span>
+                    <span class="role-desc">Mix talent and value</span>
+                </button>
+                <button class="role-option" data-role="Future Planner">
+                    <span class="role-emoji">🔮</span>
+                    <span class="role-name">Future Planner</span>
+                    <span class="role-desc">Stay flexible for later</span>
+                </button>
+            </div>
+
+            <button class="primary-action-btn overlay-cta" id="startBuildBtn">Enter the Front Office →</button>
+        </div>
+    </div>
+
+    <!-- ============ PRESSURE MOMENT ============ -->
+    <div class="overlay-screen" id="pressureScreen">
+        <div class="overlay-card pressure-card">
+            <div class="overlay-badge pressure-badge">⚡ PRESSURE MOMENT · TRADE DEADLINE</div>
+            <h2 class="overlay-title" id="pressureTitle">The Trade Deadline Offer</h2>
+            <p class="overlay-lead" id="pressureLead">
+                It's the trade deadline and a rival team just called. The whole league is watching what you do next.
+                There's no perfect choice here — each path has a real tradeoff.
+            </p>
+            <div class="pressure-options" id="pressureOptions">
+                <!-- Rendered by game.js from CapCrashEngine.PRESSURE_OPTIONS -->
+            </div>
+            <p class="pressure-footnote">Tip: think about short-term wins vs. long-term flexibility.</p>
+        </div>
+    </div>
+
+    <!-- ============ PERFORMANCE REPORT ============ -->
+    <div class="modal" id="reportModal">
+        <div class="modal-content report-content">
             <div class="confetti-container" id="confetti"></div>
-            <h2>🎉 SEASON COMPLETE! 🎉</h2>
+            <h2 id="reportHeadline">📊 Performance Report</h2>
+            <p class="report-sub" id="reportStrategyLine">Your strategy: <strong>Balanced Builder</strong></p>
 
-            <div class="season-results">
-                <div class="tier-badge">
-                    <div class="tier-icon">🏆</div>
-                    <div class="tier-label">YOUR TIER</div>
-                    <div class="tier-name" id="tierName">Championship</div>
+            <div class="grade-ring-wrap">
+                <div class="grade-ring" id="gradeRing">
+                    <div class="grade-letter" id="gradeLetter">B</div>
+                    <div class="grade-score" id="gradeScore">0</div>
                 </div>
+                <div class="tier-name" id="reportTier">Contender</div>
+            </div>
 
-                <div class="season-stats">
-                    <div class="stat-row">
-                        <span class="stat-label">Regular Season:</span>
-                        <span class="stat-value" id="seasonRecord">62-20</span>
-                    </div>
-                    <div class="stat-row">
-                        <span class="stat-label">Playoff Result:</span>
-                        <span class="stat-value" id="playoffResult">NBA Champions!</span>
-                    </div>
-                    <div class="stat-row">
-                        <span class="stat-label">Total Quality:</span>
-                        <span class="stat-value" id="finalQPts">0 pts</span>
-                    </div>
-                    <div class="stat-row">
-                        <span class="stat-label">Cap Efficiency:</span>
-                        <span class="stat-value" id="capEfficiency">0%</span>
-                    </div>
-                    <div class="stat-row">
-                        <span class="stat-label">Season Luck:</span>
-                        <span class="stat-value luck-value" id="luckRating">⚖️ Average Luck</span>
-                    </div>
+            <div class="report-metrics">
+                <div class="report-metric"><span class="rm-icon">💰</span><span class="rm-label">Cap Space</span><span class="rm-value" id="rmCash">$0</span></div>
+                <div class="report-metric"><span class="rm-icon">🏆</span><span class="rm-label">Proj. Wins</span><span class="rm-value" id="rmWins">0</span></div>
+                <div class="report-metric"><span class="rm-icon">🤝</span><span class="rm-label">Chemistry</span><span class="rm-value" id="rmChem">0</span></div>
+                <div class="report-metric"><span class="rm-icon">🔥</span><span class="rm-label">Clout</span><span class="rm-value" id="rmClout">0</span></div>
+            </div>
+
+            <div class="season-stats">
+                <div class="stat-row">
+                    <span class="stat-label">Season Record:</span>
+                    <span class="stat-value" id="seasonRecord">—</span>
                 </div>
-
-                <div class="tier-description" id="tierDescription">
-                    Outstanding roster construction! Championship caliber team!
+                <div class="stat-row">
+                    <span class="stat-label">Playoffs:</span>
+                    <span class="stat-value" id="playoffResult">—</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Trade Deadline Call:</span>
+                    <span class="stat-value" id="pressureResultLine">—</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Season Luck:</span>
+                    <span class="stat-value luck-value" id="luckRating">⚖️ Average luck</span>
                 </div>
             </div>
+
+            <div class="tier-description" id="tierDescription">—</div>
 
             <div class="claim-code">
-                <label>🎫 Your Claim Code:</label>
-                <div class="code-display" id="claimCode">CHAMPS2026</div>
-            </div>
-
-            <!-- Share Build -->
-            <div class="share-build">
-                <label>🔗 Share Your Build:</label>
-                <div class="share-row">
-                    <input type="text" class="share-link-input" id="shareLink" readonly placeholder="Generating link..." />
-                    <button class="copy-link-btn" id="copyLinkBtn" onclick="copyShareLink()">📋 Copy</button>
-                </div>
+                <label>🎫 Mission Claim Code:</label>
+                <div class="code-display" id="claimCode">—</div>
             </div>
 
             <div class="modal-actions">
-                <button class="modal-btn simulate-again-btn" id="simulateAgainBtn">🎲 Simulate Again</button>
-                <button class="modal-btn" id="closeModal">🔄 Build Another Roster</button>
+                <button class="modal-btn simulate-again-btn" id="simulateAgainBtn">🎲 Replay Season</button>
+                <button class="modal-btn" id="toMemoBtn">✍️ Write Boardroom Memo →</button>
             </div>
         </div>
     </div>
 
-    <!-- Trade Modal -->
+    <!-- ============ BOARDROOM MEMO ============ -->
+    <div class="modal" id="memoModal">
+        <div class="modal-content memo-content">
+            <div class="overlay-badge">FINAL STEP · BOARDROOM MEMO</div>
+            <h2 class="memo-title">Defend Your Strategy</h2>
+            <p class="memo-lead">
+                Write a short memo to the team owner. In a sentence or two, explain
+                <strong>your plan</strong> and <strong>why it works</strong>. There's no perfect answer —
+                a great GM can defend their choices.
+            </p>
+
+            <div class="memo-starters">
+                <span class="memo-starter-label">Need a start? Tap one:</span>
+                <div class="memo-chips" id="memoChips"></div>
+            </div>
+
+            <textarea id="memoText" class="memo-textarea" maxlength="600"
+                placeholder="My strategy was to… because…"></textarea>
+            <div class="memo-count"><span id="memoCount">0</span> / 600</div>
+
+            <div class="modal-actions">
+                <button class="modal-btn secondary-btn" id="backToReportBtn">← Back to Report</button>
+                <button class="modal-btn" id="finishMemoBtn">Submit Memo ✓</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ COMPLETION SUMMARY ============ -->
+    <div class="modal" id="summaryModal">
+        <div class="modal-content summary-content">
+            <h2>🎉 Mission Complete!</h2>
+            <p class="summary-sub" id="summaryName">Great work, GM.</p>
+
+            <div class="summary-card" id="summaryCard">
+                <!-- Filled by game.js -->
+            </div>
+
+            <div class="modal-actions">
+                <button class="modal-btn secondary-btn" id="copySummaryBtn">📋 Copy Summary</button>
+                <button class="modal-btn" id="playAgainBtn">🔄 Play Again</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ TRADE MODAL ============ -->
     <div class="modal" id="tradeModal">
         <div class="modal-content trade-modal-content">
-            <h2>↔ TRADE NEGOTIATION</h2>
+            <h2>↔ Trade Negotiation</h2>
             <div class="trade-sending">
                 <div class="trade-sending-label">TRADING AWAY</div>
                 <div class="trade-sending-player">
-                    <span class="trade-player-name-big" id="tradeModalPlayerName">Player Name</span>
+                    <span class="trade-player-name-big" id="tradeModalPlayerName">Player</span>
                     <span class="trade-player-salary-big" id="tradeModalSalary">$0M</span>
                 </div>
                 <div class="trade-match-rule">
-                    Salary match limit: <strong id="tradeModalMaxReturn">$0M</strong> (125% rule)
+                    Salary match limit: <strong id="tradeModalMaxReturn">$0M</strong> (the salaries have to roughly match)
                 </div>
             </div>
-
             <div class="trade-returns-section">
-                <h3 class="trade-section-title">✅ Eligible Trade Returns</h3>
-                <div class="trade-player-list" id="tradeEligibleList">
-                    <!-- Populated by JS -->
-                </div>
-
+                <h3 class="trade-section-title">✅ Players you can trade for</h3>
+                <div class="trade-player-list" id="tradeEligibleList"></div>
                 <div class="trade-ineligible-section" id="tradeIneligibleSection">
-                    <div class="trade-player-list" id="tradeIneligibleList">
-                        <!-- Populated by JS -->
-                    </div>
+                    <div class="trade-player-list" id="tradeIneligibleList"></div>
                 </div>
             </div>
-
-            <button class="cancel-trade-btn" onclick="cancelTrade()">✗ Cancel Trade</button>
+            <button class="cancel-trade-btn" id="cancelTradeBtn">✗ Cancel Trade</button>
         </div>
     </div>
 
-    <!-- Tutorial Overlay -->
+    <!-- ============ HOW TO PLAY ============ -->
     <div class="tutorial-overlay" id="tutorialOverlay">
         <div class="tutorial-tooltip" id="tutorialTooltip">
             <div class="tutorial-header">
@@ -225,13 +333,17 @@
             <h3 class="tutorial-title" id="tutorialTitle">Welcome!</h3>
             <p class="tutorial-text" id="tutorialText">Let's walk through the basics.</p>
             <div class="tutorial-actions">
-                <button class="tutorial-skip-btn" onclick="skipTutorial()">Skip</button>
-                <button class="tutorial-next-btn" id="tutorialNext" onclick="nextTutorialStep()">Next →</button>
+                <button class="tutorial-skip-btn" id="tutorialSkipBtn">Skip</button>
+                <button class="tutorial-next-btn" id="tutorialNext">Next →</button>
             </div>
         </div>
     </div>
 
+    <!-- Lightweight toast for friendly nudges -->
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
     <script src="players-data.js"></script>
+    <script src="sim-engine.js"></script>
     <script src="game.js"></script>
 </body>
 </html>
